@@ -1,0 +1,40 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% block content %}
+
+
+    <form method="post">{% csrf_token %}
+        <div class="form-group">
+            {{ form.province|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.name|add_class:'form-control' }}
+        </div>
+                   <div class="form-group">
+            {{ form.organization_phone|add_class:'form-control' }}
+        </div>
+                   <div class="form-group">
+            {{ form.employees_number|add_class:'form-control' }}
+        </div>
+                   <div class="form-group">
+            {{ form.owner|add_class:'form-control' }}
+        </div>
+                   <div class="form-group">
+            {{ form.email|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.owner_phone|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            {{ form.organization_product }}
+        </div>
+
+            <input type="submit" value="Confirm">
+
+    </form>
+
+
+{% endblock %}

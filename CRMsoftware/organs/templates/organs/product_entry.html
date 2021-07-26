@@ -1,0 +1,18 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+{#{% load widget_tweaks %}#}
+{% load i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% block content %}
+
+    <h1 class="mt-5 mb-4"><i class="fa fa-phone-volume ml-2"></i>New product</h1>
+    <form method="post">{% csrf_token %}
+
+            {{ form.as_p}}
+            <input type="submit" value="Confirm">
+
+    </form>
+
+
+{% endblock %}
+

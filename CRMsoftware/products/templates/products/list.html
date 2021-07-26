@@ -1,0 +1,56 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+    <form method="get">
+    <div id="sidebar">
+        <h3>Categories</h3>
+        <ul>
+            <li {% if not category %}class="selected"{% endif %}>
+                <a href="{% url "products:product_list" %}">All</a>
+            </li>
+            {% for c in category_list.object %}
+                <li {% if category.slug == c.slug %}class="selected"
+                    {% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="main" class="product-list">
+        <h1>{% if category %}{{ category.name }}{% else %}Products
+        {% endif %}</h1>
+        {% for product in object_list %}
+            <div class="item">
+                <a href="{{ product.get_absolute_url }}">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                </a>
+                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                <br>
+                ${{ product.price }}
+            </div>
+        {% endfor %}
+    </div>
+    </form>
+    {% block pagination %}
+                {% if is_paginated %}
+                    <div class="pagination" style="color: #7abaff">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a style="color: white"
+                       href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a style="color: white" href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+                    </div>
+                {% endif %}
+            {% endblock %}
+{% endblock %}
