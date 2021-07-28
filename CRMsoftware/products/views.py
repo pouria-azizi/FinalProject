@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
 from . import models
-from .models import Category, Product
+from .models import Product
 from django.views.generic import ListView, DetailView, CreateView
 
 
@@ -10,12 +10,12 @@ class ProductList(ListView):
 
     paginate_by = 8
     template_name = 'products/list.html'
-
-
-class CategoryList(ListView):
-    model = models.Category
-    template_name = 'products/list.html'
-
+#
+#
+# class CategoryList(ListView):
+#     model = models.Category
+#     template_name = 'products/list.html'
+#     category_object = models.Category.objects.all()
 
 # def product_detail(request, id, slug):
 #     product = get_object_or_404(Product, id=id, slug=slug, available=True)

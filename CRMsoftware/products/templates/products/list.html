@@ -6,20 +6,20 @@
 {% endblock %}
 {% block content %}
     <form method="get">
-    <div id="sidebar">
-        <h3>Categories</h3>
-        <ul>
-            <li {% if not category %}class="selected"{% endif %}>
-                <a href="{% url "products:product_list" %}">All</a>
-            </li>
-            {% for c in category_list.object %}
-                <li {% if category.slug == c.slug %}class="selected"
-                    {% endif %}>
-                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+{#    <div id="sidebar">#}
+{#        <h3>Categories</h3>#}
+{#        <ul>#}
+{#            <li {% if not category %}class="selected"{% endif %}>#}
+{#                <a href="{% url "products:product_list" %}">All</a>#}
+{#            </li>#}
+{#            {% for c in page_obj.object_list_2 %}#}
+{#                <li {% if category.slug == c.slug %}class="selected"#}
+{#                    {% endif %}>#}
+{#                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#        </ul>#}
+{#    </div>#}
     <div id="main" class="product-list">
         <h1>{% if category %}{{ category.name }}{% else %}Products
         {% endif %}</h1>

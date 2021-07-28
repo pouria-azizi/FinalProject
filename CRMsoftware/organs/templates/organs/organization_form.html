@@ -1,0 +1,22 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+
+    <form method="post">
+        <div class="container">
+            <div class="jumbotron">
+                <h1>ویرایش مشخصات سازمان:{{ object.name }}</h1>
+                <button><a href="{% url 'organ_list' %}"></a>بازگشت</button>
+
+            </div>
+            {{ form.as_p }}
+
+        </div>
+
+<input type="submit" value="Confirm" href="{% url 'organ_list' %}">
+    </form>
+{% endblock %}

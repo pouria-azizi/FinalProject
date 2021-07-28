@@ -7,12 +7,12 @@
     <div class="product-detail">
         <img src="{% if product.image %}{{ product.image.url }}{% else %}
         {% static "img/no_image.png" %}{% endif %}">
-        <h1>{{ product.name }}</h1>
+        <h1>{{ object.name }}</h1>
         <h2>
-            <a href="{{ product.category.get_absolute_url }}">
-                {{ product.category }}</a>
+            <a href="{{ object.category.get_absolute_url }}">
+                {{ object.category }}</a>
         </h2>
-        <p class="price">${{ product.price }}</p>
-        {{ product.description|linebreaks }}
+        <p class="price">${{ object.price }}</p>
+        {{ object.description|linebreaks }}
     </div>
 {% endblock %}

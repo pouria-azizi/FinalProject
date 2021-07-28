@@ -1,0 +1,70 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+<div id="sidebar"><header>مشخصات مخاطب</header>
+    <table class="table table-striped">
+        <thead>
+                <tr>
+                    <th scope="row">نام و نام خانوادگی</th>
+                    <th scope="row">شماره تماس</th>
+                </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">{{ object.owner }}</th>
+            <th scope="row">{{ object.owner_phone }}</th>
+        </tr>
+        </tbody>
+    </table>
+</div>
+    <form method="get">
+        <div class="container">
+            <div class="jumbotron">
+                <h1> مشخصات سازمان:{{ object.name }}</h1>
+                <button href="{% url 'organ_list' %}">بازگشت</button>
+                <button href="">صدور پیش فاکتور</button>
+                <button>
+                    <a href="{% url 'organ_edit' object.pk %}">ویرایش</a>
+                </button>
+
+            </div>
+
+
+        <div class="container">
+        <div class="col-sm">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">استان</th>
+                    <th scope="col">تلفن</th>
+                    <th scope="col">تعداد کارکنان</th>
+                    <th scope="col">محصولات تولیدی</th>
+                    <th scope="col">محصولات پیشنهادی ما</th>
+                    <th scope="col">ثبت توسط</th>
+                    <th scope="col">تاریخ ثبت</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ object.province }}</td>
+                    <td>{{ object.organization_phone }}</td>
+                    <td>{{ object.employees_number }}</td>
+                    <td>{{ object.organization_product }}</td>
+                    <td>{{ 1 }}</td>
+                    <td>{{ object.created_by }}</td>
+                    <td>{{ object.created_at }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+            </div>
+            </div>
+    </form>
+
+{% endblock %}

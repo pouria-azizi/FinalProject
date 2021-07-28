@@ -1,0 +1,60 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+    <form method="get">
+
+        <div class="product-list">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">نام</th>
+                    <th scope="col">استان</th>
+                    <th scope="col">نام مخاطب</th>
+                    <th scope="col">تلفن</th>
+                    <th scope="col">ثبت توسط</th>
+                    <th scope="col">تاریخ ثبت</th>
+                    <th scope="col">عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for organ in object_list %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a href="{% url 'organ_detail' organ.pk %}">{{ organ.name }}</a></td>
+                        <td>{{ organ.province }}</td>
+                        <td>{{ organ.owner }}</td>
+                        <td>{{ organ.organization_phone }}</td>
+                        <td>{{ organ.created_by }}</td>
+                        <td>{{ organ.created_at }}</td>
+                        <td>ثبت پیگیری</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </form>
+    {% block pagination %}
+        {% if is_paginated %}
+            <div class="pagination" style="color: #7abaff">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a style="color: white"
+                       href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a style="color: white" href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

@@ -1,14 +1,9 @@
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
-
-from products.models import Product
+from products.models import FollowUpProduct
 
 phone_regex = RegexValidator(regex='^0[0-9]{2,}[0-9]{7,}$', message='phone number invalid')
-
-
-class OrganizationProduct(models.Model):
-    name = models.ManyToManyField(Product)
 
 
 class Organization(models.Model):
@@ -19,7 +14,7 @@ class Organization(models.Model):
     owner = models.CharField(max_length=150)
     email = models.EmailField()
     owner_phone = models.CharField(validators=[phone_regex], max_length=11)
-    organization_product = models.ManyToManyField(OrganizationProduct)
+    organization_product = models.ManyToManyField(FollowUpProduct)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
@@ -28,7 +23,5 @@ class Organization(models.Model):
             models.UniqueConstraint(fields=['name', 'created_by'], name='UniqueOrgan')
         ]
 
-
-
-    # def __str__(self):
-    #     return self.name
+    def __str__(self):
+        return self.organization_product

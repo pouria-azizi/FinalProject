@@ -16,8 +16,18 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Python 3.8 (FinalProject)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jquery-3.5.1.slim" level="application" />
+    <orderEntry type="library" name="jquery-3.2.1.slim" level="application" />
+    <orderEntry type="library" name="popper.js" level="application" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/CRMsoftware/organs/templates" />
+        <option value="$MODULE_DIR$/CRMsoftware/products/templates" />
+        <option value="$MODULE_DIR$/CRMsoftware/users/templates" />
+      </list>
+    </option>
   </component>
 </module>
