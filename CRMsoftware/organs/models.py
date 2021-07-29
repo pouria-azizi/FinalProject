@@ -14,6 +14,9 @@ class OrganizationProduct(models.Model):
 
 
 class Organization(models.Model):
+    """
+    Model to save the specifications of organs
+    """
     province = models.CharField(max_length=100)
     name = models.CharField(max_length=150)
     organization_phone = models.CharField(validators=[phone_regex], max_length=11)
@@ -23,29 +26,12 @@ class Organization(models.Model):
     owner_phone = models.CharField(validators=[phone_regex], max_length=11)
     organization_product = models.ManyToManyField(OrganizationProduct)
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['name', 'created_by'], name='UniqueOrgan')
         ]
 
-    # def __str__(self):
-    #     return f'{self.organization_product.name}'
-
-    # def __getitem__(self, item):
-    #     self.re_p = Organization.objects.all()
-    #     # self.related_products = self.re_p.organization_set.all()
-    #     rr = OrganizationProduct.objects.filter(related_product__in=self.re_p)
-    #     return rr
-
-    # def __getitem__(self, item):
-    #     products = OrganizationProduct.objects.all()
-    #     qs = products.objects.filter(related_item__in=self.organization_product)
-    #     return qs
-
-    def related_item(self):
-        products = set()
-        for product in self.organization_product.all():
-            products = set(product.get_name)
-        return list(products)
+    def get_related_product(self):
+        return [product.name for product in self.organization_product.all()]

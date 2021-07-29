@@ -57,7 +57,7 @@
                     <td>{{ object.organization_phone }}</td>
                     <td>{{ object.employees_number }}</td>
                     <td>{% for product in object.organization_product.all %}{{ product.name }}<br>{% endfor %}</td>
-                    <td>{{ products }}</td>
+                    <td>{% for product1 in object.get_suggestion_products %} ,{{ product1 }} {% endfor %}</td>
                     <td>{{ object.created_by }}</td>
                     <td>{{ object.created_at }}</td>
                 </tr>

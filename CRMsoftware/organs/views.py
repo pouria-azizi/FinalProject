@@ -1,13 +1,13 @@
 import logging
-
+from django.shortcuts import redirect
 from django.http import JsonResponse, HttpResponse
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView
 from . import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.contrib import messages
 from django.views.generic import CreateView, UpdateView
 from . import models
 
@@ -16,29 +16,35 @@ logger = logging.getLogger(__name__)  # logger object
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CreateNewOrganization(LoginRequiredMixin, CreateView):
-
-    queryset = models.Organization.objects.all()
-    fields = [
-        'province',
-        'name',
-        'organization_phone',
-        'employees_number',
-        'owner',
-        'email',
-        'owner_phone',
-        'organization_product',
-        'created_by'
-    ]
+    """
+    view for create new organization
+    """
+    form_class = forms.EntryOrganizationForm
     template_name = 'organs/add_entry.html'
-    success_url = reverse_lazy('products:product_list')
+    extra_context = {'organization_products': models.OrganizationProduct.objects.all()}
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid input.')
+        return reverse_lazy('create_organ')
 
     def form_valid(self, form):
-        qs = models.Organization.save.user = self.request.user
-        return qs
+        form.instance.created_by = self.request.user
+        try:
+            messages.success(self.request, 'Organization created successfully.')
+            return super().form_valid(form)
+        except:
+            messages.error(self.request, 'Invalid input.')
+            return redirect(reverse_lazy('create_organ'))
+
+    def get_success_url(self):
+        return reverse('organ_list')
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class EditOrgan(LoginRequiredMixin, UpdateView):
+    """
+        view for edit organs
+    """
     model = models.Organization
     fields = (
         'organization_phone',
@@ -52,33 +58,26 @@ class EditOrgan(LoginRequiredMixin, UpdateView):
 
 
 class OrgansList(ListView):
+    """
+    Show the list of organs
+    """
     model = models.Organization
     template_name = 'organs/organization_list.html'
 
 
 class OrgansDetail(DetailView):
+    """
+    Show the detail of organs
+    """
     model = models.Organization
 
 
 class OrganizationNewProduct(CreateView):
+    """
+    Create new organs product
+    """
     model = models.OrganizationProduct
     fields = [
         'name'
     ]
     success_url = reverse_lazy('create_organ')
-    # def get_queryset(self):
-    #     organ_p = forms.EntryOrganizationForm.
-    #     return organ_p
-
-
-# @method_decorator(c/srf_exempt, name='dispatch')
-# class ShowAddEntryForm(CreateView):
-#     """
-#     Show the add entry form page
-#     """
-#     model = models.OrganizationProduct
-#     fields = [
-#         'name'
-#     ]
-#     template_name = 'organs/product_entry.html'
-#     success_url = reverse_lazy('organ_product')
