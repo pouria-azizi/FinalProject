@@ -5,7 +5,6 @@ from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView
-from . import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView
@@ -19,7 +18,17 @@ class CreateNewOrganization(LoginRequiredMixin, CreateView):
     """
     view for create new organization
     """
-    form_class = forms.EntryOrganizationForm
+    queryset = models.Organization.objects.all()
+    fields = [
+        'province',
+        'name',
+        'organization_phone',
+        'employees_number',
+        'owner',
+        'email',
+        'owner_phone',
+        'organization_product',
+    ]
     template_name = 'organs/add_entry.html'
     extra_context = {'organization_products': models.OrganizationProduct.objects.all()}
 
@@ -63,6 +72,7 @@ class OrgansList(ListView):
     """
     model = models.Organization
     template_name = 'organs/organization_list.html'
+    paginate_by = 5
 
 
 class OrgansDetail(DetailView):

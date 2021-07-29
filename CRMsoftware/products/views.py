@@ -1,27 +1,20 @@
-from django.shortcuts import render, get_object_or_404
-
 from . import models
-from .models import Product
 from django.views.generic import ListView, DetailView, CreateView
 
 
 class ProductList(ListView):
+    """
+    Show the list of products
+    """
     model = models.Product
 
     paginate_by = 8
     template_name = 'products/list.html'
-#
-#
-# class CategoryList(ListView):
-#     model = models.Category
-#     template_name = 'products/list.html'
-#     category_object = models.Category.objects.all()
-
-# def product_detail(request, id, slug):
-#     product = get_object_or_404(Product, id=id, slug=slug, available=True)
-#     return render(request, 'products/detail.html', {'product': product})
 
 
 class ProductDetail(DetailView):
+    """
+    Show the detail of single product
+    """
     model = models.Product
     template_name = 'products/detail.html'

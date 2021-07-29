@@ -7,6 +7,9 @@ phone_regex = RegexValidator(regex='^0[0-9]{2,}[0-9]{7,}$', message='phone numbe
 
 
 class OrganizationProduct(models.Model):
+    """
+    Products of organs
+    """
     name = models.CharField(max_length=200)
 
     def __str__(self):
