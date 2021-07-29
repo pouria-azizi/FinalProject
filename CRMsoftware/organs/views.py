@@ -8,8 +8,7 @@ from django.views.generic import ListView, DetailView
 from . import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
-from django.views.generic import CreateView, FormView, UpdateView
-
+from django.views.generic import CreateView, UpdateView
 from . import models
 
 logger = logging.getLogger(__name__)  # logger object
@@ -27,10 +26,15 @@ class CreateNewOrganization(LoginRequiredMixin, CreateView):
         'owner',
         'email',
         'owner_phone',
-        'organization_product'
+        'organization_product',
+        'created_by'
     ]
     template_name = 'organs/add_entry.html'
     success_url = reverse_lazy('products:product_list')
+
+    def form_valid(self, form):
+        qs = models.Organization.save.user = self.request.user
+        return qs
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -56,7 +60,18 @@ class OrgansDetail(DetailView):
     model = models.Organization
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
+class OrganizationNewProduct(CreateView):
+    model = models.OrganizationProduct
+    fields = [
+        'name'
+    ]
+    success_url = reverse_lazy('create_organ')
+    # def get_queryset(self):
+    #     organ_p = forms.EntryOrganizationForm.
+    #     return organ_p
+
+
+# @method_decorator(c/srf_exempt, name='dispatch')
 # class ShowAddEntryForm(CreateView):
 #     """
 #     Show the add entry form page

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+    {% if category %}{{ category.name }}{% else %}Detail{% endif %}
 {% endblock %}
 {% block content %}
 <div id="sidebar"><header>مشخصات مخاطب</header>
@@ -25,7 +25,9 @@
         <div class="container">
             <div class="jumbotron">
                 <h1> مشخصات سازمان:{{ object.name }}</h1>
-                <button href="{% url 'organ_list' %}">بازگشت</button>
+                <button>
+                    <a href="{% url 'organ_detail' object.pk %}">بازگشت</a>
+                </button>
                 <button href="">صدور پیش فاکتور</button>
                 <button>
                     <a href="{% url 'organ_edit' object.pk %}">ویرایش</a>
@@ -54,8 +56,8 @@
                     <td>{{ object.province }}</td>
                     <td>{{ object.organization_phone }}</td>
                     <td>{{ object.employees_number }}</td>
-                    <td>{{ object.organization_product }}</td>
-                    <td>{{ 1 }}</td>
+                    <td>{% for product in object.organization_product.all %}{{ product.name }}<br>{% endfor %}</td>
+                    <td>{{ products }}</td>
                     <td>{{ object.created_by }}</td>
                     <td>{{ object.created_at }}</td>
                 </tr>

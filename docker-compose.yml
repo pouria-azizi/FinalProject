@@ -1,6 +1,6 @@
 version: '3'
-volumes:
-  CrmDbData:
+#volumes:
+#  CrmDbData:
 services:
   database:
     image: "postgres:10-alpine"
@@ -12,8 +12,8 @@ services:
       PGPASSWORD: 123456
       POSTGRES_DB: maktab_crm
       PGDATA: /db_data
-    volumes:
-      - CrmDbData:/db_data
+#    volumes:
+#      - CrmDbData:/db_data
 #  cache:
 #    image: "memcached:alpine"
 #    ports:

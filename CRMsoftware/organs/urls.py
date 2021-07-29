@@ -8,4 +8,5 @@ urlpatterns = [
     path('organ_list/', views.OrgansList.as_view(), name='organ_list'),
     path('organ_detail/<int:pk>', views.OrgansDetail.as_view(), name='organ_detail'),
     path('organ_edit/<int:pk>', views.EditOrgan.as_view(), name='organ_edit'),
+    path('organ_product/', views.OrganizationNewProduct.as_view(), name='organ_product')
 ]
