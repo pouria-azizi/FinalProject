@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
-from organs.models import OrganizationProduct # noqa
+from django_jalali.db import models as jmodels
+# from organs.models import OrganizationProduct, Organization
 
 
 class Product(models.Model):
@@ -13,9 +14,9 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    follow_product = models.ManyToManyField(OrganizationProduct)
+    created = jmodels.jDateTimeField(auto_now_add=True)
+    updated = jmodels.jDateTimeField(auto_now=True)
+    follow_product = models.ManyToManyField('organs.OrganizationProduct')
 
     class Meta:
         ordering = ('name',)
@@ -26,3 +27,7 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('products:product_detail', args=[self.id, self.slug])
+    #
+    # def get_related_product(self):
+    #     related = OrganizationProduct.objects.all()
+    #     return Organization.objects.filter(organization_product__in=related).distinct()

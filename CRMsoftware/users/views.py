@@ -37,12 +37,13 @@ def login_view(request):
                 next_url = request.GET.get('next', '/')
                 # Make sure we are only redirect to inter urls
                 if is_safe_url(next_url, settings.ALLOWED_HOSTS):
+                    messages.success(request, 'شما با موفقیت وارد شدید')
                     return redirect('products:product_list')
                 else:
                     return redirect('products:product_list')
             else:
                 # The user or password is invalid
-                messages.error(request, "Username or password was incorrect !!")
+                messages.error(request, "لطفا نام کاربری و رمز عبور صحیح را وارد نمایید")
 
     return render(
         request,

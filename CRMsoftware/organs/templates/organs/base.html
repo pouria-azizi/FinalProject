@@ -18,7 +18,7 @@
 
 </head>
 
-<body>
+<body style="background-color: #2b542c">
 
 <div id="header">
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #5993bb">
@@ -56,6 +56,22 @@
 
     </div>
 </nav>
+</div>
+
+
+<div class="container">
+    <div class="col-12">
+        {% if messages %}
+            {% for message in messages %}
+
+                <div class="alert alert-success">
+                    {{ message }}
+                    <button type="button" data-dismiss="alert" class="close">&times;</button>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+    </div>
 </div>
 
 <div id="content">

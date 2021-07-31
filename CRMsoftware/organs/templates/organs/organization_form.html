@@ -13,10 +13,11 @@
                 <button><a href="{% url 'organ_list' %}"></a>بازگشت</button>
 
             </div>
-            {{ form.as_p }}
-
+            <div style="color: white">
+                {{ form.as_p }}
+            </div>
         </div>
 
-<input type="submit" value="Confirm" href="{% url 'organ_list' %}">
+        <input type="submit" value="Confirm" href="{% url 'organ_list' %}">
     </form>
 {% endblock %}

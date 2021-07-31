@@ -6,51 +6,38 @@
 {% endblock %}
 {% block content %}
     <form method="get">
-{#    <div id="sidebar">#}
-{#        <h3>Categories</h3>#}
-{#        <ul>#}
-{#            <li {% if not category %}class="selected"{% endif %}>#}
-{#                <a href="{% url "products:product_list" %}">All</a>#}
-{#            </li>#}
-{#            {% for c in page_obj.object_list_2 %}#}
-{#                <li {% if category.slug == c.slug %}class="selected"#}
-{#                    {% endif %}>#}
-{#                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>#}
-{#                </li>#}
-{#            {% endfor %}#}
-{#        </ul>#}
-{#    </div>#}
-    <div id="main" class="product-list">
-        <h1>{% if category %}{{ category.name }}{% else %}Products
-        {% endif %}</h1>
-        {% for product in object_list %}
-            <div class="item">
-                <a href="{{ product.get_absolute_url }}">
-                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
-                </a>
-                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-                <br>
-                ${{ product.price }}
-            </div>
-        {% endfor %}
-    </div>
+
+        <div id="main" class="product-list">
+            <h1 style="color: white">محصولات
+            </h1>
+            {% for product in object_list %}
+                <div class="item">
+                    <a href="{{ product.get_absolute_url }}">
+                        <img class="rounded mx-auto d-block img-thumbnail" style="width: 300px; height: 300px;"
+                             src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" alt="Responsive image">
+                    </a>
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    <br>
+                    <p style="color: white">${{ product.price }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </form>
-    {% block pagination %}
-                {% if is_paginated %}
-                    <div class="pagination" style="color: #7abaff">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a style="color: white"
-                       href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a style="color: white" href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-                    </div>
-                {% endif %}
-            {% endblock %}
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current" style="color: white">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
 {% endblock %}

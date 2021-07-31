@@ -1,7 +1,40 @@
-<h>ایجاد محصوا جدید</h>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-<input type="submit" value="Confirm">
-</form>
+{% extends 'organs/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
 
+
+    {#    <form method="post">#}
+    {#        {% csrf_token %}#}
+    {#        <div class="container">#}
+    {#            {{ form.as_p }}#}
+    {#        </div>#}
+    {#        <div class="container">#}
+    {#            <input type="submit" value="Confirm">#}
+    {#        </div>#}
+    {#    </form>#}
+
+    <div class="limiter">
+        <div class="col-md-3">
+
+            <div class="panel-heading">
+                <div class="center-block" style="color: white">ایجاد محصوا جدید</div>
+            </div>
+            <div style="padding-top:30px" class="panel-body">
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-group" style="color: white">نام محصول
+                        {{ form.name|add_class:'form-control' }}
+                    </div>
+
+                    <input type="submit" value="Confirm">
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

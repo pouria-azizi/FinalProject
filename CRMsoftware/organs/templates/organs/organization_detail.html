@@ -5,8 +5,8 @@
     {% if category %}{{ category.name }}{% else %}Detail{% endif %}
 {% endblock %}
 {% block content %}
-<div id="sidebar"><header>مشخصات مخاطب</header>
-    <table class="table table-striped">
+<div id="sidebar"><header style="color: white">مشخصات مخاطب</header>
+    <table class="table table-striped" style="background-color: white">
         <thead>
                 <tr>
                     <th scope="row">نام و نام خانوادگی</th>
@@ -26,7 +26,7 @@
             <div class="jumbotron">
                 <h1> مشخصات سازمان:{{ object.name }}</h1>
                 <button>
-                    <a href="{% url 'organ_detail' object.pk %}">بازگشت</a>
+                    <a href="{% url 'organ_list' %}">بازگشت</a>
                 </button>
                 <button href="">صدور پیش فاکتور</button>
                 <button>
@@ -39,7 +39,7 @@
         <div class="container">
         <div class="col-sm">
 
-            <table class="table table-striped">
+            <table class="table table-striped" style="background-color: white">
                 <thead>
                 <tr>
                     <th scope="col">استان</th>
@@ -57,7 +57,7 @@
                     <td>{{ object.organization_phone }}</td>
                     <td>{{ object.employees_number }}</td>
                     <td>{% for product in object.organization_product.all %}{{ product.name }}<br>{% endfor %}</td>
-                    <td>{% for product1 in object.get_suggestion_products %} ,{{ product1 }} {% endfor %}</td>
+                    <td>{% for related_product in offer_product %}{{ related_product.name }}<br> {% endfor %}</td>
                     <td>{{ object.created_by }}</td>
                     <td>{{ object.created_at }}</td>
                 </tr>
