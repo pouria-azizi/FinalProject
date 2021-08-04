@@ -1,0 +1,58 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Quote Detail{% endif %}
+{% endblock %}
+{% block content %}
+
+    <form method="get">
+        <div class="container">
+            <div class="jumbotron">
+                <h1>{{ object.organ }}</h1>
+                <button>
+                    <a href="{% url 'quotes:quote_list' %}">بازگشت</a>
+                </button>
+            </div>
+
+
+            <div class="container">
+                <div class="col-sm">
+
+                    <table class="table table-striped" style="background-color: white">
+                        <thead>
+                        <tr>
+                            <th scope="col">نام محصولات</th>
+                            <th scope="col">تعداد</th>
+                            <th scope="col">قیمت قبل از تخفیف</th>
+                            <th scope="col">درصد تخفیف</th>
+                            <th scope="col">قیمت بعد از تخفیف</th>
+                            <th scope="col">درصد مالیات</th>
+                            <th scope="col">قیمت نهایی</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for object in object.quoteitem_set.all %}
+                            <tr>
+                                <td>{{ object.product }}<br></td>
+                                <td>{{ object.qty }}</td>
+                                <td>{{ object.get_grand_total }}</td>
+                                <td>{{ object.discount }}</td>
+                                <td>{{ object.get_price_with_discount }}</td>
+                                <td>{{ object.tax }}</td>
+                                <td>{{ object.get_price_with_tax }}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td> مجموع خرید {{ object.get_total_qty }}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

@@ -1,12 +1,12 @@
 {% extends 'organs/base.html' %}
 {% load static %}
-
-{% block title %}
-    {% if category %}{{ category.name }}{% else %}Organs{% endif %}
-{% endblock %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% block content %}
     <div class="button btn-sm">
-        <button class="header btn-block"><a style="color: black" href="{% url 'create_organ' %}">ایجاد شرکت جدید</a>
+        <button class="header btn-block"><a style="color: black" href="{% url 'quotes:create_quote' %}">ایجاد پیش
+            فاکتور</a>
         </button>
     </div>
     <form method="get">
@@ -16,26 +16,23 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">نام</th>
-                    <th scope="col">استان</th>
-                    <th scope="col">نام مخاطب</th>
-                    <th scope="col">تلفن</th>
+                    <th scope="col">نام سازمان</th>
                     <th scope="col">ثبت توسط</th>
-                    <th scope="col">تاریخ ثبت</th>
-                    <th scope="col">عملیات</th>
+                    <th scope="col">تاریخ ایجاد</th>
+                    <th scope="col">PDF خروجی</th>
+                    <th scope="col">ارسال به ایمیل مخاطب</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for organ in object_list %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td><a href="{% url 'organ_detail' organ.pk %}">{{ organ.name }}</a></td>
-                        <td>{{ organ.province }}</td>
-                        <td>{{ organ.owner }}</td>
-                        <td>{{ organ.organization_phone }}</td>
-                        <td>{{ organ.created_by }}</td>
+                        <td><a href="{% url 'quotes:quote_detail' organ.pk %}">{{ organ.organ }}</a></td>
+                            <td>{{ organ.created_by }}</td>
                         <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
-                        <td>ثبت پیگیری</td>
+                        <td href="">دریافت</td>
+                        <td href="">ارسال</td>
+
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -43,6 +40,8 @@
 
         </div>
     </form>
+
+
     <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}

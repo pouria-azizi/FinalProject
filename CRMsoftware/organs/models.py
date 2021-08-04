@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
 from django_jalali.db import models as jmodels
-from products.models import Product
+from products.models import Product # noqa
 
 phone_regex = RegexValidator(regex='^0[0-9]{2,}[0-9]{7,}$', message='phone number invalid')
 
@@ -37,7 +37,9 @@ class Organization(models.Model):
             models.UniqueConstraint(fields=['name', 'created_by'], name='UniqueOrgan')
         ]
 
+    def __str__(self):
+        return self.name
+
     # def get_related_product(self):
     #     related = OrganizationProduct.objects.all()
     #     return Product.objects.filter(follow_product__in=related).distinct()
-    #

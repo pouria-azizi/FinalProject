@@ -1,0 +1,34 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% block content %}
+
+    <div class="container col-4" style="color: white">
+        <form method="post">{% csrf_token %}
+
+            <div class="form-group">سازمان
+                {% for organ in organizations %}
+                        {{ form.quote|add_class:'form-control' }}
+                {% endfor %}
+            </div>
+
+            <div class="form-group">محصول
+                {{ form.product|add_class:'form-control' }}
+            </div>
+
+            <div class="form-group">تعداد
+                {{ form.qty|add_class:'form-control' }}
+            </div>
+
+            <div class="form-group">تخفیف
+                {{ form.discount|add_class:'form-control' }}
+            </div>
+
+            <input type="submit" value="Confirm">
+
+        </form>
+    </div>
+
+{% endblock %}
