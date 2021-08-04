@@ -1,19 +1,32 @@
-{% extends 'organs/base.html' %}
-{#{% load humanize %}#}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>phone numbers</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
 
-{% block title %}
-    {% if category %}{{ category.name }}{% else %}Quote Detail{% endif %}
-{% endblock %}
-{% block content %}
+        table {
+            border: 1px solid;
+            margin: 0 auto;
+            width: 70%;
+        }
+
+        td, th {
+            text-align: center;
+            border: 1px solid;
+        }
+    </style>
+
+</head>
+<body>
 
     <form method="get">
         <div class="container">
             <div class="jumbotron">
                 <h1>{{ object }}</h1>
-                <button>
-                    <a href="{% url 'quotes:quote_list' %}">بازگشت</a>
-                </button>
             </div>
 
 
@@ -65,5 +78,5 @@
             </div>
         </div>
     </form>
-
-{% endblock %}
+</body>
+</html>

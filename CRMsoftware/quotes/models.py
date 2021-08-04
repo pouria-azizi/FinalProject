@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.db import models
 from django_jalali.db import models as jmodels
 from django.contrib.auth.models import User
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Max, FloatField, ExpressionWrapper
 
 
 class Quote(models.Model):
@@ -14,18 +14,35 @@ class Quote(models.Model):
     def __str__(self):
         return f' پیش فاکتور {self.pk}# برای {self.organ}'
 
+    def get_grand_total(self):
+        """
+        Returns grand total of Order
+        """
+        price = self.quoteitem_set.all().annotate(price=F('product__price') * F('qty')).aggregate(Max('price'))[
+            'price__max']
+        return price
+
     def get_price_without_discount(self):
-        return self.quoteitem_set.all().annotate(price_without_discount=F('product__price') * F('qty')).aggregate(Sum('price_without_discount'))['price_without_discount__sum']
+        return self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
+            .aggregate(Sum('price_without_discount'))['price_without_discount__sum']
 
     def get_price_with_discount(self):
-        total_discount = self.quoteitem_set.all().annotate(total_discount=self.get_price_without_discount() * F('discount') / Decimal('100'))
-        price_with_discount = self.get_price_without_discount() - total_discount
-        return price_with_discount
+        price_without_discount=self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
+            .aggregate(Sum('price_without_discount'))['price_without_discount__sum']
+        price_with_discount=self.quoteitem_set.all().annotate(price_with_discount=ExpressionWrapper(price_without_discount - \
+                                (F('discount') / Decimal('100.0') * price_without_discount), output_field=FloatField()))
+        return price_with_discount.aggregate(Max('price_with_discount'))['price_with_discount__max']
 
     def get_price_with_tax(self):
-        total_tax = self.quoteitem_set.all().annotate(total_tax=self.get_price_with_discount() * F('tax') / Decimal('100'))
-        price_with_tax = self.get_price_with_discount() + total_tax
-        return price_with_tax
+        price_without_discount = \
+        self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
+            .aggregate(Sum('price_without_discount'))['price_without_discount__sum']
+        price_with_discount = self.quoteitem_set.all().annotate(price_with_discount=ExpressionWrapper(
+            price_without_discount - (F('discount') / Decimal('100.0') * price_without_discount),
+            output_field=FloatField())).aggregate(Max('price_with_discount'))['price_with_discount__max']
+        price_with_tax = self.quoteitem_set.all().annotate(price_with_tax=ExpressionWrapper(price_with_discount + \
+                                    (F('tax') / Decimal('100') * price_with_discount), output_field=FloatField()))
+        return price_with_tax.aggregate(Max('price_with_tax'))['price_with_tax__max']
 
 
 class QuoteItem(models.Model):

@@ -30,7 +30,7 @@
                         <td><a href="{% url 'quotes:quote_detail' organ.pk %}">{{ organ.organ }}</a></td>
                             <td>{{ organ.created_by }}</td>
                         <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
-                        <td href="">دریافت</td>
+                        <td><a href="{% url 'quotes:quote_pdf' organ.pk %}">دریافت</td>
                         <td href="">ارسال</td>
 
                     </tr>
