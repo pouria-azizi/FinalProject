@@ -14,24 +14,6 @@ class Quote(models.Model):
     def __str__(self):
         return f' پیش فاکتور {self.pk}# برای {self.organ}'
 
-    def get_total_qty(self):
-        """
-        Sums total qty of related order items in PYTHON
-        (which is inefficient)
-        """
-        return self.quoteitem_set.aggregate(Sum('product__price')).get('product__price__sum', 0)
-
-    # def get_item_rows(self):
-    #     return self.quoteitem_set.count()
-
-    def get_grand_total(self):
-        """
-        Returns grand total of Order
-        """
-        # Using aggregate and annotate
-        return self.quoteitem_set.all().annotate(grand_total=F('qty') * F('price')) \
-            .aggregate(Sum('grand_total'))['grand_total__sum']
-
     def get_price_without_discount(self):
         return self.quoteitem_set.all().annotate(price_without_discount=F('product__price') * F('qty')).aggregate(Sum('price_without_discount'))['price_without_discount__sum']
 
