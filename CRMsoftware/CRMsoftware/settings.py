@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'products',
     'users',
     'quotes',
+    'emails',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,5 @@ ADMINS = [('pourya2', 'pouryaazizi2@gmail.com')]
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = '1025'
+
+DEFAULT_FROM_EMAIL = 'pouryaazizi2@gmail.com'
