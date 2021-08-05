@@ -7,20 +7,15 @@ from django.db.models import Sum, F, Max, FloatField, ExpressionWrapper
 
 
 class Quote(models.Model):
+    """
+    Create new Quote to use in next level
+    """
     organ = models.ForeignKey('organs.Organization', on_delete=models.PROTECT)
     created_at = jmodels.jDateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
 
     def __str__(self):
         return f' فاکتور شماره {self.pk} برای {self.organ}'
-
-    def get_grand_total(self):
-        """
-        Returns grand total of Order
-        """
-        price = self.quoteitem_set.all().annotate(price=F('product__price') * F('qty')).aggregate(Max('price'))[
-            'price__max']
-        return price
 
     def get_price_without_discount(self):
         return self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
@@ -45,6 +40,9 @@ class Quote(models.Model):
 
 
 class QuoteItem(models.Model):
+    """
+    Choice quote and adding products to it
+    """
     quote = models.ForeignKey('quotes.Quote', on_delete=models.PROTECT)
     product = models.ForeignKey('products.Product', on_delete=models.PROTECT)
     qty = models.PositiveIntegerField(default=1)
@@ -54,3 +52,9 @@ class QuoteItem(models.Model):
     def __str__(self):
         return f'{self.quote}'
 
+
+class Email(models.Model):
+    created_at = jmodels.jDateTimeField(auto_now_add=True,)
+    # email_sender = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+    email_receiver = models.EmailField()
+    status = models.BooleanField(default=False)
