@@ -42,10 +42,10 @@ class CreateQuotes(LoginRequiredMixin, CreateView):
         'organ',
     ]
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['organizations'] = models.Quote.objects.all()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['organizations'] = models.Quote.objects.all()
+    #     return context
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
@@ -69,6 +69,7 @@ class QuoteList(LoginRequiredMixin, ListView):
 class QuoteDetail(LoginRequiredMixin, DetailView):
     model = models.Quote
     template_name = 'quotes/quote_detail.html'
+    extra_context = {'quote_pk': models.QuoteItem.quote}
 
 
 class QuotePDF(LoginRequiredMixin, DetailView):

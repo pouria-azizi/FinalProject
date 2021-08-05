@@ -52,7 +52,7 @@ class QuoteItem(models.Model):
     tax = models.FloatField(default=5)
 
     def __str__(self):
-        return f'Quote #{self.pk} for {self.quote}'
+        return f'{self.quote}'
 
 
     # def calculate_price_without_discount(self):
