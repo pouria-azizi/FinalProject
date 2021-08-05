@@ -5,7 +5,7 @@
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% block content %}
     <div class="button btn-sm">
-        <button class="header btn-block"><a style="color: black" href="{% url 'quotes:create_quote' %}">ایجاد پیش
+        <button class="header btn-block"><a style="color: black" href="{% url 'quotes:new_quote' %}">ایجاد پیش
             فاکتور</a>
         </button>
     </div>
@@ -30,7 +30,7 @@
                         <td><a href="{% url 'quotes:quote_detail' organ.pk %}">{{ organ.organ }}</a></td>
                             <td>{{ organ.created_by }}</td>
                         <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
-                        <td><a href="{% url 'quotes:quote_pdf' organ.pk %}">دریافت</td>
+                        <td><a href="{% url 'quotes:quote_pdf' organ.pk %}">دریافت</a></td>
                         <td href="">ارسال</td>
 
                     </tr>

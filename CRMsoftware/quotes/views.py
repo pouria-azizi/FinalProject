@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponse
 
 
-class CreateQuotes(LoginRequiredMixin, CreateView):
+class CreateItemQuotes(LoginRequiredMixin, CreateView):
     template_name = 'quotes/quote_form.html'
     model = models.QuoteItem
     fields = [
@@ -24,8 +24,8 @@ class CreateQuotes(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
-        messages.success(self.request, 'پیش فاکتور ذخیره شد')
-        return super(CreateQuotes, self).form_valid(form)
+        messages.success(self.request, 'فاکتور ذخیره شد')
+        return super(CreateItemQuotes, self).form_valid(form)
 
     def form_invalid(self, form):
         messages.error(self.request, 'اطلاعات را به درستی وارد نمایید')
@@ -33,6 +33,31 @@ class CreateQuotes(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('quotes:quote_list')
+
+
+class CreateQuotes(LoginRequiredMixin, CreateView):
+    template_name = 'quotes/new_quote.html'
+    model = models.Quote
+    fields = [
+        'organ',
+    ]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['organizations'] = models.Quote.objects.all()
+        return context
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        messages.success(self.request, 'پیش فاکتور جدید ایجاد شد')
+        return super(CreateQuotes, self).form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'اطلاعات را به درستی وارد نمایید')
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse('quotes:create_quote')
 
 
 class QuoteList(LoginRequiredMixin, ListView):

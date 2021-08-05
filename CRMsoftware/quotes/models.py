@@ -12,7 +12,7 @@ class Quote(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
-        return f' پیش فاکتور {self.pk}# برای {self.organ}'
+        return f' فاکتور شماره {self.pk} برای {self.organ}'
 
     def get_grand_total(self):
         """
@@ -27,15 +27,14 @@ class Quote(models.Model):
             .aggregate(Sum('price_without_discount'))['price_without_discount__sum']
 
     def get_price_with_discount(self):
-        price_without_discount=self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
+        price_without_discount = self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
             .aggregate(Sum('price_without_discount'))['price_without_discount__sum']
-        price_with_discount=self.quoteitem_set.all().annotate(price_with_discount=ExpressionWrapper(price_without_discount - \
-                                (F('discount') / Decimal('100.0') * price_without_discount), output_field=FloatField()))
+        price_with_discount = self.quoteitem_set.all().annotate(price_with_discount=ExpressionWrapper \
+            (price_without_discount - (F('discount') / Decimal('100.0') * price_without_discount), output_field=FloatField()))
         return price_with_discount.aggregate(Max('price_with_discount'))['price_with_discount__max']
 
     def get_price_with_tax(self):
-        price_without_discount = \
-        self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
+        price_without_discount = self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
             .aggregate(Sum('price_without_discount'))['price_without_discount__sum']
         price_with_discount = self.quoteitem_set.all().annotate(price_with_discount=ExpressionWrapper(
             price_without_discount - (F('discount') / Decimal('100.0') * price_without_discount),
@@ -53,7 +52,7 @@ class QuoteItem(models.Model):
     tax = models.FloatField(default=5)
 
     def __str__(self):
-        return f'{self.quote}'
+        return f'Quote #{self.pk} for {self.quote}'
 
 
     # def calculate_price_without_discount(self):
@@ -69,3 +68,13 @@ class QuoteItem(models.Model):
     #     total_tax = float(self.calculate_price_with_discount()) * self.tax / 100
     #     price_with_tax = float(self.calculate_price_with_discount()) + total_tax
     #     return price_with_tax
+
+#
+# class Email(models.Model):
+#     """
+#     Email configurations and saving email histories
+#     """
+#     created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+#     created_at = jmodels.jDateTimeField(auto_now_add=True)
+#     status = models.BooleanField(default=True)
+#     email = models.CharField(max_length=50)

@@ -1,0 +1,18 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+    <div class="container col-4" style="color: white">
+        <form method="post">{% csrf_token %}
+
+            <div class="form-group">سازمان
+                {{ form.organ|add_class:'form-control' }}
+            </div>
+            <input type="submit" value="Confirm">
+            <button class="button"><a style="color: black" href="{% url 'create_organ' %}">ایجاد شرکت جدید</a>
+            </button>
+        </form>
+    </div>
+
+{% endblock %}
