@@ -5,6 +5,6 @@
 # class Profile(models.Model):
 #     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
 #     mobile = models.CharField(max_length=11)
-#     graduate = models.CharField(blank=True)
+#     email = models.EmailField()
 #     date_of_birth = models.DateField(blank=True, null=True)
 #     joined = models.DateTimeField(auto_now_add=True, db_index=True)

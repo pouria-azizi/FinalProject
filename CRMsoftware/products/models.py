@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django_jalali.db import models as jmodels
-# from organs.models import OrganizationProduct, Organization
 
 
 class Product(models.Model):

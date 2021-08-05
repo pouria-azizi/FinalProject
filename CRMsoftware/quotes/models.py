@@ -2,14 +2,14 @@ from decimal import Decimal
 
 from django.db import models
 from django_jalali.db import models as jmodels
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db.models import Sum, F, Max, FloatField, ExpressionWrapper
 
 
 class Quote(models.Model):
     organ = models.ForeignKey('organs.Organization', on_delete=models.PROTECT)
     created_at = jmodels.jDateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
 
     def __str__(self):
         return f' فاکتور شماره {self.pk} برای {self.organ}'
@@ -54,27 +54,3 @@ class QuoteItem(models.Model):
     def __str__(self):
         return f'{self.quote}'
 
-
-    # def calculate_price_without_discount(self):
-    #     price_without_discount = self.qty * self.product.price
-    #     return price_without_discount
-    #
-    # def calculate_price_with_discount(self):
-    #     total_discount = float(self.calculate_price_without_discount()) * self.discount / 100
-    #     price_with_discount = float(self.calculate_price_without_discount()) - total_discount
-    #     return price_with_discount
-    #
-    # def calculate_price_with_tax(self):
-    #     total_tax = float(self.calculate_price_with_discount()) * self.tax / 100
-    #     price_with_tax = float(self.calculate_price_with_discount()) + total_tax
-    #     return price_with_tax
-
-#
-# class Email(models.Model):
-#     """
-#     Email configurations and saving email histories
-#     """
-#     created_by = models.ForeignKey(User, on_delete=models.PROTECT)
-#     created_at = jmodels.jDateTimeField(auto_now_add=True)
-#     status = models.BooleanField(default=True)
-#     email = models.CharField(max_length=50)

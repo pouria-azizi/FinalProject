@@ -1,8 +1,9 @@
-from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.db import models
 from django_jalali.db import models as jmodels
 from products.models import Product # noqa
+from django.contrib.auth import get_user_model
+
 
 phone_regex = RegexValidator(regex='^0[0-9]{2,}[0-9]{7,}$', message='phone number invalid')
 
@@ -30,7 +31,7 @@ class Organization(models.Model):
     owner_phone = models.CharField(validators=[phone_regex], max_length=11)
     organization_product = models.ManyToManyField('OrganizationProduct')
     created_at = jmodels.jDateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
 
     class Meta:
         constraints = [
