@@ -39,7 +39,7 @@ class CreateNewOrganization(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         try:
-            messages.success(self.request, 'Organization created successfully.')
+            messages.success(self.request, 'سازمان جدید به لیست سازمانها اضافه شد')
             return super().form_valid(form)
         except:
             messages.error(self.request, 'Invalid input.')

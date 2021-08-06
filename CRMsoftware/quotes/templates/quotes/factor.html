@@ -1,0 +1,16 @@
+
+
+                                                    {{ object }}
+
+<P>نام محصولات</P>                <P>تعداد</P>           <P>قیمت هر عدد دستگاه</P>            <P>درصد تخفیف</P>              <P>درصد مالیات</P>
+
+{% for object in object.quoteitem_set.all %}
+{{ object.tax }}                        {{ object.discount }}                         {{ object.product.price }}                            {{ object.qty }}                       {{ object.product }}
+                        {% endfor %}
+
+
+
+
+<p>مجموع خرید بدون تخفیف :</p>  {{ object.get_price_without_discount }}
+<p>مجموع خرید با تخفیف :</p>    {{ object.get_price_with_discount }}
+<p>مجموع نهایی خرید با احتساب مالیات :</p>  {{ object.get_price_with_tax }}

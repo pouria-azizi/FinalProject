@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4cd+(t^t2no6@w=vt^3bhgu_**i=)=agx4rk)wrj&o(3@+7ihw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -38,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
     'widget_tweaks',
     'organs',
     'products',
     'users',
     'quotes',
-    'emails',
 ]
 
 MIDDLEWARE = [
@@ -82,14 +82,14 @@ WSGI_APPLICATION = 'CRMsoftware.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'maktab_crm',
-        'USER': 'usr_crm',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'maktab_crm',
+        # 'USER': 'usr_crm',
+        # 'PASSWORD': '123456',
+        # 'HOST': 'localhost',
+        # 'PORT': '5432'
     }
 }
 
@@ -141,9 +141,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_BROKER_URL = 'quotes:send_email'
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+
 ADMINS = [('pourya2', 'pouryaazizi2@gmail.com')]
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = '1025'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
 
 DEFAULT_FROM_EMAIL = 'pouryaazizi2@gmail.com'
+EMAIL_HOST_USER = 'pouryaazizi2@gmail.com'
+SERVER_EMAIL = 'pouryaazizi2@gmail.com'
+EMAIL_HOST_PASSWORD = '9394008572'
+EMAIL_SUBJECT_PREFIX = 'فاکتور خرید'
+EMAIL_USE_TLS = True

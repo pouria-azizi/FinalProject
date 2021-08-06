@@ -28,11 +28,11 @@
                 {% for organ in object_list %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td><a href="{% url 'quotes:quote_detail' organ.pk %}">{{ quote_pk }}{{ organ.quoteitem_set.first }}</a></td>
+                        <td><a href="{% url 'quotes:quote_detail' organ.pk %}">{{ organ.quoteitem_set.first }}</a></td>
                             <td>{{ organ.created_by }}</td>
                         <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
                         <td><a href="{% url 'quotes:quote_pdf' organ.pk %}">دریافت</a></td>
-                        <td href="">ارسال</td>
+                        <td><a href="{% url 'quotes:send-email' organ.pk %}">ارسال</a></td>
                         <td><a href="{% url 'quotes:create_quote' %}">🛠</a></td>
 
                     </tr>
