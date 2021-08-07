@@ -154,6 +154,6 @@ EMAIL_PORT = '587'
 DEFAULT_FROM_EMAIL = 'pouryaazizi2@gmail.com'
 EMAIL_HOST_USER = 'pouryaazizi2@gmail.com'
 SERVER_EMAIL = 'pouryaazizi2@gmail.com'
-EMAIL_HOST_PASSWORD = '9394008572'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_SUBJECT_PREFIX = 'فاکتور خرید'
 EMAIL_USE_TLS = True
