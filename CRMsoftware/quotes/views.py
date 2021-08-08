@@ -12,6 +12,8 @@ from django.template.loader import render_to_string
 from django.core import mail
 from django.utils.html import strip_tags
 from django.conf import settings
+from .models import Email
+from django.contrib.auth import get_user_model
 
 
 class CreateItemQuotes(LoginRequiredMixin, CreateView):
@@ -104,17 +106,16 @@ class QuotePDF(LoginRequiredMixin, DetailView):
 @require_http_methods(["GET"])
 @login_required
 def send_email_to_organs(request, pk):
-
     try:
-        subject = 'فاکتور خرید'
-        html_message = render_to_string('quotes/factor.html', context={'object': models.Quote.objects.get(pk=pk)})
+        html_message = render_to_string('quotes/quote_pdf.html', context={'object': models.Quote.objects.get(pk=pk)})
         plain_message = strip_tags(html_message)
-        from_email = settings.DEFAULT_FROM_EMAIL
         to = models.Quote.objects.get(pk=pk).organ.email
+        email_sender1 = request.user.username
         # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-        tasks.send_email.delay(subject, plain_message, from_email, [to], html_message=html_message)
+        tasks.send_email.delay(plain_message, email_sender1, [to, ], html_message=html_message)
         messages.success(request, 'ایمیل با موفقیت ارسال شد')
         return redirect('quotes:quote_list')
     except:
+
         messages.error(request, 'ایمیل ارسال نشد')
         return redirect('quotes:quote_list')

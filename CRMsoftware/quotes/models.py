@@ -43,7 +43,7 @@ class QuoteItem(models.Model):
     """
     Choice quote and adding products to it
     """
-    quote = models.ForeignKey('quotes.Quote', on_delete=models.PROTECT)
+    quote = models.ForeignKey(Quote, on_delete=models.PROTECT)
     product = models.ForeignKey('products.Product', on_delete=models.PROTECT)
     qty = models.PositiveIntegerField(default=1)
     discount = models.FloatField(default=0)
@@ -54,7 +54,10 @@ class QuoteItem(models.Model):
 
 
 class Email(models.Model):
+    """
+    save history of quotes mail
+    """
     created_at = jmodels.jDateTimeField(auto_now_add=True,)
-    # email_sender = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+    email_sender = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name='user_sender')
     email_receiver = models.EmailField()
     status = models.BooleanField(default=False)
