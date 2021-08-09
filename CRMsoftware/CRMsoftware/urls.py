@@ -17,7 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from organs import views as organs_view
+from users import views as users_view
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter()
+router.register('organs', organs_view.OrgansListApi)
+router.register('users', users_view.UserViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +32,8 @@ urlpatterns = [
     # path('products/', include('products.urls')),
     path('users/', include('users.urls')),
     path('quotes/', include('quotes.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/v1/', include(router.urls)),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

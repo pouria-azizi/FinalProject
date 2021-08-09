@@ -61,3 +61,6 @@ class Email(models.Model):
     email_sender = models.ForeignKey(get_user_model(), on_delete=models.PROTECT, related_name='user_sender')
     email_receiver = models.EmailField()
     status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.email_sender}'

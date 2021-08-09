@@ -7,8 +7,11 @@ from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView
-from . import models
+from . import models, serializers
 from products.models import Product # noqa
+from rest_framework import generics, filters, viewsets, permissions
+from rest_framework.exceptions import NotAuthenticated
+from rest_framework.pagination import PageNumberPagination
 
 logger = logging.getLogger(__name__)  # logger object
 
@@ -78,6 +81,11 @@ class EditOrgan(LoginRequiredMixin, UpdateView):
             messages.error(self.request, 'Invalid input.')
             return redirect(reverse_lazy('create_organ'))
 
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            raise NotAuthenticated('You need to be logged on.')
+        return models.Organization.objects.filter(created_by=self.request.user)
+
     def get_success_url(self):
         return reverse('organ_list')
 
@@ -89,6 +97,11 @@ class OrgansList(ListView):
     model = models.Organization
     template_name = 'organs/organization_list.html'
     paginate_by = 5
+
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            raise NotAuthenticated('You need to be logged on.')
+        return models.Organization.objects.filter(created_by=self.request.user)
 
     # def get_queryset(self):
     #     return models.Organization.objects.filter(created_by=self.request.user)
@@ -112,6 +125,11 @@ class OrgansDetail(LoginRequiredMixin, DetailView):
         c['offer_product'] = self.get_related_products()
         return c
 
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            raise NotAuthenticated('You need to be logged on.')
+        return models.Organization.objects.filter(created_by=self.request.user)
+
 
 class OrganizationNewProduct(CreateView):
     """
@@ -122,3 +140,21 @@ class OrganizationNewProduct(CreateView):
         'name'
     ]
     success_url = reverse_lazy('create_organ')
+
+
+"""
+DRF
+"""
+
+
+class OrgansListApi(viewsets.ModelViewSet):
+    queryset = models.Organization.objects.all()
+    serializer_class = serializers.OrgansSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
+    pagination_class = PageNumberPagination
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # def get_queryset(self):
+    #     if self.request.user.is_anonymous:
+    #         raise NotAuthenticated('You need to be logged on.')
+    #     return models.Organization.objects.filter(created_by=self.request.user)

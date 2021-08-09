@@ -10,5 +10,5 @@ urlpatterns = [
     path('quote_list/', views.QuoteList.as_view(), name='quote_list'),
     path('quote_detail/<int:pk>', views.QuoteDetail.as_view(), name='quote_detail'),
     path('quote_pdf/<int:pk>', views.QuotePDF.as_view(), name='quote_pdf'),
-    path('send_email/<int:pk>', views.send_email_to_organs, name='send-email')
+    path('send_email/<int:pk>', views.send_email_to_organs, name='send-email'),
 ]

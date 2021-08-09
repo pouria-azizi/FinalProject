@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4cd+(t^t2no6@w=vt^3bhgu_**i=)=agx4rk)wrj&o(3@+7ihw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_results',
+    'rest_framework',
     'widget_tweaks',
     'organs',
     'products',
@@ -151,9 +152,15 @@ ADMINS = [('pourya2', 'pouryaazizi2@gmail.com')]
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 
-DEFAULT_FROM_EMAIL = ''
-EMAIL_HOST_USER = ''
-SERVER_EMAIL = ''
+DEFAULT_FROM_EMAIL = '@gmail.com'
+EMAIL_HOST_USER = '@gmail.com'
+SERVER_EMAIL = '@.com'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_SUBJECT_PREFIX = 'فاکتور خرید'
 EMAIL_USE_TLS = True
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2
+}

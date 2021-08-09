@@ -11,9 +11,8 @@ from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.core import mail
 from django.utils.html import strip_tags
-from django.conf import settings
 from .models import Email
-from django.contrib.auth import get_user_model
+from rest_framework.exceptions import NotAuthenticated
 
 
 class CreateItemQuotes(LoginRequiredMixin, CreateView):
@@ -78,6 +77,11 @@ class QuoteList(LoginRequiredMixin, ListView):
     template_name = 'quotes/quote_item_form.html'
     paginate_by = 5
 
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            raise NotAuthenticated('You need to be logged on.')
+        return models.Quote.objects.filter(created_by=self.request.user)
+
 
 class QuoteDetail(LoginRequiredMixin, DetailView):
     """
@@ -86,6 +90,11 @@ class QuoteDetail(LoginRequiredMixin, DetailView):
     model = models.Quote
     template_name = 'quotes/quote_detail.html'
     extra_context = {'quote_pk': models.QuoteItem.quote}
+
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            raise NotAuthenticated('You need to be logged on.')
+        return models.Quote.objects.filter(created_by=self.request.user)
 
 
 class QuotePDF(LoginRequiredMixin, DetailView):
@@ -102,19 +111,26 @@ class QuotePDF(LoginRequiredMixin, DetailView):
         pdf_response = HttpResponse(content=pdf, content_type='application/pdf')
         return pdf_response
 
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            raise NotAuthenticated('You need to be logged on.')
+        return models.Quote.objects.filter(created_by=self.request.user)
+
 
 @require_http_methods(["GET"])
 @login_required
 def send_email_to_organs(request, pk):
     try:
-        html_message = render_to_string('quotes/quote_pdf.html', context={'object': models.Quote.objects.get(pk=pk)})
+
+        html_message = render_to_string('quotes/quote_pdf.html', context={'object': models.Quote.objects.get(pk=pk, created_by=request.user)})
         plain_message = strip_tags(html_message)
         to = models.Quote.objects.get(pk=pk).organ.email
         email_sender1 = request.user.username
         # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-        tasks.send_email.delay(plain_message, email_sender1, [to, ], html_message=html_message)
+        tasks.send_email.delay(plain_message, email_sender1, [to], html_message=html_message)
         messages.success(request, 'ایمیل با موفقیت ارسال شد')
         return redirect('quotes:quote_list')
+
     except:
 
         messages.error(request, 'ایمیل ارسال نشد')

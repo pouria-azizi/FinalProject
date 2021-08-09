@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    {% if category %}{{ category.name }}{% else %}Detail{% endif %}
+    Detail
 {% endblock %}
 {% block content %}
 <div id="sidebar"><header style="color: white">مشخصات مخاطب</header>
@@ -28,7 +28,7 @@
                 <button>
                     <a href="{% url 'organ_list' %}">بازگشت</a>
                 </button>
-                <button href="{% url 'quotes:create_quote' %}">صدور پیش فاکتور</button>
+                <button href="{% url 'quotes:new_quote' %}">صدور پیش فاکتور</button>
                 <button>
                     <a href="{% url 'organ_edit' object.pk %}">ویرایش</a>
                 </button>

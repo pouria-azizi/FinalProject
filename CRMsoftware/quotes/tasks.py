@@ -13,7 +13,7 @@ def send_email(plain_message, email_sender1, to, html_message):
 
         send_mail(subject='فاکتور خرید', message=plain_message, from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=to, html_message=html_message)
 
-        Email.objects.create(email_sender=get_user_model().objects.get(username=email_sender1), email_receiver=[to, ], status='True')
+        Email.objects.create(email_sender=get_user_model().objects.get(username=email_sender1), email_receiver=to, status='True')
         return 'شد'
 
     except:
