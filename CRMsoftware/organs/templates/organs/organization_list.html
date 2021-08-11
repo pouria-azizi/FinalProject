@@ -29,13 +29,19 @@
                 {% for organ in object_list %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
-                        <td><a href="{% url 'organ_detail' organ.pk %}">{{ organ.name }}</a></td>
+                        <td><a href="{% url 'organ_detail' organ.pk %}" id="data">{{ organ.name }}</a></td>
                         <td>{{ organ.province }}</td>
                         <td>{{ organ.owner }}</td>
                         <td>{{ organ.organization_phone }}</td>
                         <td>{{ organ.created_by }}</td>
                         <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
-                        <td>ثبت پیگیری</td>
+
+
+                        <td>
+                        <a href="{% url 'organ-description' organ.pk %}"> ثبت پیگیری</a>
+                            <a href="{% url 'followup-detail' organ.pk %}">🧐</a>
+
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -60,5 +66,8 @@
         {% endif %}
     </span>
     </div>
+
+{% endblock %}
+{% block page_scripts %}
 
 {% endblock %}

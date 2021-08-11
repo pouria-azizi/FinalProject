@@ -11,6 +11,7 @@ class QuoteAdmin(admin.ModelAdmin):
     inlines = (
         QuoteItemInline,
     )
+    list_filter = ['organ', 'created_by', 'created_at']
 
 
 @admin.register(Email)

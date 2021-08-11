@@ -1,17 +1,22 @@
 import logging
 from django.shortcuts import redirect
+from django.http import JsonResponse, HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.views.generic import CreateView, UpdateView
-from . import models, serializers
+from django.views.generic import CreateView, UpdateView, FormView
+from . import models, serializers, forms
 from products.models import Product # noqa
 from rest_framework import generics, filters, viewsets, permissions
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.authtoken.models import Token
+from django.views.decorators.http import require_POST
+from django.contrib.auth import decorators
+
 
 logger = logging.getLogger(__name__)  # logger object
 
@@ -142,6 +147,45 @@ class OrganizationNewProduct(CreateView):
     success_url = reverse_lazy('create_organ')
 
 
+@method_decorator(csrf_exempt, name='dispatch')
+class CreateFollowUp(LoginRequiredMixin, CreateView):
+    model = models.FollowUp
+    fields = [
+        'description'
+    ]
+    template_name = 'organs/followup_form.html'
+
+    def form_invalid(self, form):
+        return JsonResponse(data={
+            'success': 'False',
+        }, status=400)
+
+    def form_valid(self, form):
+        form.save(commit=False).created_by = self.request.user
+        form.save(commit=False).organ = models.Organization.objects.get(pk=self.kwargs['pk'])
+        form.save()
+        return JsonResponse(data={
+            'success': 'True',
+        }, status=200)
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'organ_obj': models.Organization.objects.get(pk=self.kwargs['pk']),
+        }
+        return context
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class FollowUpDetail(LoginRequiredMixin, DetailView):
+    queryset = models.FollowUp.objects.all()
+    template_name = 'organs/followup_detail.html'
+
+    def get_queryset(self):
+        if self.request.user.is_anonymous:
+            raise NotAuthenticated('You need to be logged on.')
+        return models.Organization.objects.filter(created_by=self.request.user)
+
+
 """
 DRF
 """
@@ -153,8 +197,11 @@ class OrgansListApi(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
     pagination_class = PageNumberPagination
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    # def get_queryset(self):
-    #     if self.request.user.is_anonymous:
-    #         raise NotAuthenticated('You need to be logged on.')
-    #     return models.Organization.objects.filter(created_by=self.request.user)
+    permission_classes = [permissions.IsAuthenticated]
+    # token = Token.objects.create(user=models.Organization.created_by)
+    # print(token.key)
+
+    def get_queryset(self):
+        return models.Organization.objects.filter(created_by_id=self.request.user.pk)
+
+

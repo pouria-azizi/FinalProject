@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from organs import views as organs_view
 from users import views as users_view
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views
 
 router = DefaultRouter()
 router.register('organs', organs_view.OrgansListApi)
@@ -35,8 +36,12 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/', include(router.urls)),
 ]
+
+
+# urlpatterns += [
+#     path('api-token-auth/', views.obtain_auth_token)
+# ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-

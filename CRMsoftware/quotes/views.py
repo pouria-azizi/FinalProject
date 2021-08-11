@@ -1,10 +1,9 @@
 import weasyprint
 from django.views.generic import CreateView, ListView, DetailView
-from . import models, tasks
+from . import models, tasks, forms
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http.response import HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -13,7 +12,7 @@ from django.core import mail
 from django.utils.html import strip_tags
 from .models import Email
 from rest_framework.exceptions import NotAuthenticated
-
+from django.http import JsonResponse, HttpResponse
 
 class CreateItemQuotes(LoginRequiredMixin, CreateView):
     """

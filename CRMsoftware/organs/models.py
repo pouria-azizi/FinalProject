@@ -44,3 +44,18 @@ class Organization(models.Model):
     # def get_related_product(self):
     #     related = OrganizationProduct.objects.all()
     #     return Product.objects.filter(follow_product__in=related).distinct()
+
+
+class FollowUp(models.Model):
+    description = models.TextField(blank=True, unique=True)
+    organ = models.ForeignKey(Organization, on_delete=models.CASCADE)
+    created = jmodels.jDateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
+
+    def __str__(self):
+        return f'FollowUp created by {self.created_by} for {self.organ}'
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['description', 'organ'], name='UniqueFollowUp')
+        ]

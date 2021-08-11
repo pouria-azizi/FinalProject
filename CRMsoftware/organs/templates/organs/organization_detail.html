@@ -1,6 +1,6 @@
 {% extends 'organs/base.html' %}
 {% load static %}
-
+{% load widget_tweaks %}
 {% block title %}
     Detail
 {% endblock %}
@@ -59,7 +59,7 @@
                     <td>{% for product in object.organization_product.all %}{{ product.name }}<br>{% endfor %}</td>
                     <td>{% for related_product in offer_product %}{{ related_product.name }}<br> {% endfor %}</td>
                     <td>{{ object.created_by }}</td>
-                    <td>{{ object.created_at }}</td>
+                    <td>{{ object.created_at|date:"Y-m-d" }}</td>
                 </tr>
                 </tbody>
             </table>

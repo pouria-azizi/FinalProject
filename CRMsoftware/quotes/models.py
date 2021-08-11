@@ -17,6 +17,9 @@ class Quote(models.Model):
     def __str__(self):
         return f' فاکتور شماره {self.pk} برای {self.organ}'
 
+    def get_formatted_date(self):
+        return self.created_at.strftime(format=('%Y-%m-%d'))
+
     def get_price_without_discount(self):
         return self.quoteitem_set.all().annotate(price_without_discount=F('qty') * F('product__price')) \
             .aggregate(Sum('price_without_discount'))['price_without_discount__sum']
@@ -64,3 +67,6 @@ class Email(models.Model):
 
     def __str__(self):
         return f'{self.email_sender}'
+
+    def get_formatted_date(self):
+        return self.created_at.strftime('%Y-%m-%d')

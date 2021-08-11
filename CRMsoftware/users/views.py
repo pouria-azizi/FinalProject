@@ -11,6 +11,12 @@ from django.views.generic import UpdateView
 from rest_framework import viewsets, permissions
 from django.contrib.auth import models as modelss
 from . import forms, models, serializers
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
 logger = logging.getLogger(__name__)  # logger object
 
@@ -63,6 +69,8 @@ def logout_view(request):
     return redirect('users:login')
 
 
+def must(request):
+    return render(request, template_name='users/must_login.html')
 #  View Class
 # class EditUserProfile(LoginRequiredMixin, UpdateView):
 #     """
@@ -82,10 +90,19 @@ def logout_view(request):
 #         return self.request.user
 
 
-
 """
 DRF View
 """
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.get(user=instance)
+
+
+# for user in User.objects.all():
+#     Token.objects.get_or_create(user=user)
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -1,7 +1,7 @@
-# from django import forms
-# from . import models
-#
-#
+from django import forms
+from . import models
+
+
 # class EntryOrganizationForm(forms.ModelForm):
 #     class Meta:
 #         model = models.Organization
@@ -15,3 +15,11 @@
 #             'owner_phone',
 #             'organization_product',
 #         ]
+
+
+class FollowUpForm(forms.ModelForm):
+    class Meta:
+        model = models.FollowUp
+        fields = [
+            'description'
+        ]

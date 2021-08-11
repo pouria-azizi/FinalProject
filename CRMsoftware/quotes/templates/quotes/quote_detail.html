@@ -38,7 +38,7 @@
                             <tr>
                             <td>{{ object.product }}<br></td>
                             <td>{{ object.qty }}</td>
-                            <td>{{ object.product.price }}</td>
+                            <td>$ {{ object.product.price }}</td>
                             <td>{{ object.discount }}</td>
                             <td>{{ object.tax }}</td>
                         {% endfor %}
@@ -56,9 +56,9 @@
                         </thead>
                         <tbody>
                             <tr>
-                            <td>{{ object.get_price_without_discount }}<br></td>
-                            <td>{{ object.get_price_with_discount }}</td>
-                            <td>{{ object.get_price_with_tax }}</td>
+                            <td>$ {{ object.get_price_without_discount }}<br></td>
+                            <td>$ {{ object.get_price_with_discount }}</td>
+                            <td>$ {{ object.get_price_with_tax }}</td>
                         </tr>
 
                         </tbody>

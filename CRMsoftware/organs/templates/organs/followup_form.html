@@ -1,0 +1,43 @@
+{% extends 'organs/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="form-group col-lg-6">
+        <form class="form-group" method="post">
+            {% csrf_token %}
+
+            <label for="description"></label>
+            <textarea class="form-control" rows="5" id="description" name="description"
+                      placeholder="توضیحات را اینجا وارد نمایید"></textarea>
+
+        </form>
+        <br>
+
+        <button class="btn btn-primary" type="submit" id="save">ذخیره</button>
+    </div>
+{% endblock %}
+{% block page_scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#save').on('click', function (event) {
+                var description = $('#description').val();
+
+                $.ajax({
+                    method: 'POST',
+                    url: '{% url 'organ-description' organ_obj.pk %}',
+                    data: {
+                        description: description
+                    },
+                    success: function (response) {
+                        alert('با موفقیت ذخیره شد.');
+                    },
+                    error: function (response) {
+                        alert('اطلاعات وارد شده صحیح نیست.');
+                    },
+
+                })
+            });
+        });
+    </script>
+
+{% endblock %}
