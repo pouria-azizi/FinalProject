@@ -53,9 +53,9 @@ class FollowUp(models.Model):
     created_by = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)
 
     def __str__(self):
-        return f'FollowUp created by {self.created_by} for {self.organ}'
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['description', 'organ'], name='UniqueFollowUp')
-        ]
+        return f'{self.organ}'
+    #
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(fields=['description', 'organ'], name='UniqueFollowUp')
+    #     ]

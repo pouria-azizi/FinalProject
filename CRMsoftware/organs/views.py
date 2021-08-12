@@ -7,16 +7,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.views.generic import CreateView, UpdateView, FormView
+from django.views.generic import CreateView, UpdateView
 from . import models, serializers, forms
-from products.models import Product # noqa
+from products.models import Product  # noqa
 from rest_framework import generics, filters, viewsets, permissions
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.authtoken.models import Token
-from django.views.decorators.http import require_POST
-from django.contrib.auth import decorators
-
 
 logger = logging.getLogger(__name__)  # logger object
 
@@ -149,6 +146,9 @@ class OrganizationNewProduct(CreateView):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class CreateFollowUp(LoginRequiredMixin, CreateView):
+    """
+    Create new followUp for organs
+    """
     model = models.FollowUp
     fields = [
         'description'
@@ -175,10 +175,15 @@ class CreateFollowUp(LoginRequiredMixin, CreateView):
         return context
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class FollowUpDetail(LoginRequiredMixin, DetailView):
     queryset = models.FollowUp.objects.all()
     template_name = 'organs/followup_detail.html'
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        context = super(FollowUpDetail, self).get_context_data(**kwargs)
+        context['description'] = models.FollowUp.objects.filter(organ_id=pk)
+        return context
 
     def get_queryset(self):
         if self.request.user.is_anonymous:
@@ -192,16 +197,18 @@ DRF
 
 
 class OrgansListApi(viewsets.ModelViewSet):
+    """
+    this view can represent api for organizations data
+    """
     queryset = models.Organization.objects.all()
     serializer_class = serializers.OrgansSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
     pagination_class = PageNumberPagination
     permission_classes = [permissions.IsAuthenticated]
+
     # token = Token.objects.create(user=models.Organization.created_by)
     # print(token.key)
 
     def get_queryset(self):
         return models.Organization.objects.filter(created_by_id=self.request.user.pk)
-
-

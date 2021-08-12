@@ -1,13 +1,45 @@
 {% extends 'organs/base.html' %}
 {% load static %}
-{% load widget_tweaks %}
+
 {% block title %}
-    FollowUp Detail
+    {% if category %}{{ category.name }}{% else %}Organs{% endif %}
 {% endblock %}
 {% block content %}
+    <div class="col-lg-3 container-fluid">
+        <h4 style="color: white">تاریخچه ی پیگیری های سازمان {{ object }}
+        </h4>
+    </div><br>
+    <button><a href="{% url 'organ_list' %}">بازگشت</a></button>
     <form method="get">
 
-        {{ object }}
+        <div class="product-list">
+            <table class="table table-striped" style="background-color: white">
 
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+
+                    <th scope="col">ثبت توسط</th>
+                    <th scope="col">تاریخ ثبت</th>
+                    <th scope="col">توضیحات</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for obj in description.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+
+                        <td>{{ obj.created_by }}</td>
+                        <td>{{ obj.created|date:"Y-m-d , H:i:s" }}</td>
+                        <td>{{ obj.description }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
     </form>
+
 {% endblock %}
