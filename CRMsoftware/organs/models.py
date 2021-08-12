@@ -47,7 +47,7 @@ class Organization(models.Model):
 
 
 class FollowUp(models.Model):
-    description = models.TextField(blank=True, unique=True)
+    description = models.TextField(blank=True)
     organ = models.ForeignKey(Organization, on_delete=models.CASCADE)
     created = jmodels.jDateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(get_user_model(), on_delete=models.PROTECT)

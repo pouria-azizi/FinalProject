@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django_jalali.db import models as jmodels
+from django.core.validators import FileExtensionValidator
 
 
 class Product(models.Model):
@@ -13,6 +14,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
+    file = models.FileField(blank=True, null=True, validators=[FileExtensionValidator(allowed_extensions=['pdf'])])
     created = jmodels.jDateTimeField(auto_now_add=True)
     updated = jmodels.jDateTimeField(auto_now=True)
     follow_product = models.ManyToManyField('organs.OrganizationProduct')

@@ -8,11 +8,15 @@
         <img src="{% if product.image %}{{ product.image.url }}{% else %}
         {% static "img/no_image.png" %}{% endif %}">
         <h1>{{ object.name }}</h1>
-        <h2>
-            <a href="{{ object.category.get_absolute_url }}">
-                {{ object.category }}</a>
-        </h2>
+
         <p class="price" style="color: white">${{ object.price }}</p>
         {{ object.description|linebreaks }}
+        <h5>
+            {% if object.file %}
+                <a href="{{ object.file.url }}">
+                    دانلود کاتالوگ </a>
+            {% else %}
+            {% endif %}
+        </h5>
     </div>
 {% endblock %}

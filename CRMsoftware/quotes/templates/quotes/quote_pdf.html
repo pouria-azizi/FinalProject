@@ -1,6 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Quote PDF</title>
     <style>
@@ -12,71 +16,73 @@
             border: 1px solid;
             margin: 0 auto;
             width: 70%;
+            color: blue;
         }
 
         td, th {
             text-align: center;
             border: 1px solid;
         }
+
     </style>
 
 </head>
 <body>
 
-    <form method="get">
+<form method="get">
+    <div class="container">
+        <div class="jumbotron">
+            <h1>{{ object }}</h1>
+        </div>
+
+
         <div class="container">
-            <div class="jumbotron">
-                <h1>{{ object }}</h1>
-            </div>
+            <div class="col-sm">
 
-
-            <div class="container">
-                <div class="col-sm">
-
-                    <table class="table table-striped" style="background-color: white">
-                        <thead>
+                <table class="table table-striped" style="background-color: white">
+                    <thead class="glyphicon">
+                    <tr>
+                        <th scope="col">نام محصولات</th>
+                        <th scope="col">تعداد</th>
+                        <th scope="col">قیمت هر عدد دستگاه</th>
+                        <th scope="col">درصد تخفیف</th>
+                        <th scope="col">درصد مالیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in object.quoteitem_set.all %}
                         <tr>
-                            <th scope="col">نام محصولات</th>
-                            <th scope="col">تعداد</th>
-                            <th scope="col">قیمت هر عدد دستگاه</th>
-                            <th scope="col">درصد تخفیف</th>
-                            <th scope="col">درصد مالیات</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for object in object.quoteitem_set.all %}
-                            <tr>
-                            <td>{{ object.product }}<br></td>
-                            <td>{{ object.qty }}</td>
-                            <td>{{ object.product.price }}</td>
-                            <td>{{ object.discount }}</td>
-                            <td>{{ object.tax }}</td>
-                        {% endfor %}
-                        </tr>
+                        <td>{{ object.product }}<br></td>
+                        <td>{{ object.qty }}</td>
+                        <td>$ {{ object.product.price }}</td>
+                        <td>{{ object.discount }}</td>
+                        <td>{{ object.tax }}</td>
+                    {% endfor %}
+                    </tr>
 
-                        </tbody>
-                    </table>
-                    <table class="table table-striped" style="background-color: white">
-                        <thead>
-                        <tr>
-                            <th scope="col">مجموع خرید بدون تخفیف</th>
-                            <th scope="col">مجموع خرید با تخفیف</th>
-                            <th scope="col">مجموع نهایی خرید با احتساب مالیات</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            <td>{{ object.get_price_without_discount }}<br></td>
-                            <td>{{ object.get_price_with_discount }}</td>
-                            <td>{{ object.get_price_with_tax }}</td>
-                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped" style="background-color: white">
+                    <thead>
+                    <tr>
+                        <th scope="col">مجموع خرید بدون تخفیف</th>
+                        <th scope="col">مجموع خرید با تخفیف</th>
+                        <th scope="col">مجموع نهایی خرید با احتساب مالیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>$ {{ object.get_price_without_discount }}<br></td>
+                        <td>$ {{ object.get_price_with_discount }}</td>
+                        <td>$ {{ object.get_price_with_tax }}</td>
+                    </tr>
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                </div>
             </div>
         </div>
-    </form>
+    </div>
+</form>
 </body>
 </html>

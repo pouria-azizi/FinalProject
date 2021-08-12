@@ -1,56 +1,56 @@
-{% extends 'organs/base.html' %}
-{% load static %}
-{% load widget_tweaks %}
-{% load i18n %}
-{% block content %}
+{#{% extends 'organs/base.html' %}#}
+{#{% load static %}#}
+{#{% load widget_tweaks %}#}
+{#{% load i18n %}#}
+{#{% block content %}#}
+{##}
+{#    <div class="container col-4" style="color: white">#}
+{#        <form method="post">{% csrf_token %}#}
+{##}
+{#            <div class="form-group">پیش فاکتور#}
+{#                {{ form.quote|add_class:'form-control' }}#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">محصول#}
+{#                {{ form.product|add_class:'form-control' }}#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">تعداد#}
+{#                {{ form.qty|add_class:'form-control' }}#}
+{#            </div>#}
+{##}
+{#            <div class="form-group">تخفیف#}
+{#                {{ form.discount|add_class:'form-control' }}#}
+{#            </div>#}
+{##}
+{#            <input type="submit" value="Confirm">#}
+{##}
+{#        </form>#}
+{#    </div>#}
+{##}
+{##}
+{##}
+{##}
+{#    <h3>My Services</h3>#}
+{#    {{ organizations.management_form }}#}
+{#    <div id="form_set">#}
+{#        {% for form in serviceFormset.forms %}#}
+{#            <table class='no_error'>#}
+{#                {{ form.as_table }}#}
+{#            </table>#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#    <input type="button" value="Add More" id="add_more">#}
+{#    <div id="empty_form" style="display:none">#}
+{#        <table class='no_error'>#}
+{#            {{ serviceFormset.empty_form.as_table }}#}
+{#        </table>#}
+{#    </div>#}
 
-    <div class="container col-4" style="color: white">
-        <form method="post">{% csrf_token %}
-
-            <div class="form-group">پیش فاکتور
-                {{ form.quote|add_class:'form-control' }}
-            </div>
-
-            <div class="form-group">محصول
-                {{ form.product|add_class:'form-control' }}
-            </div>
-
-            <div class="form-group">تعداد
-                {{ form.qty|add_class:'form-control' }}
-            </div>
-
-            <div class="form-group">تخفیف
-                {{ form.discount|add_class:'form-control' }}
-            </div>
-
-            <input type="submit" value="Confirm">
-
-        </form>
-    </div>
-
-
-
-
-    <h3>My Services</h3>
-    {{ organizations.management_form }}
-    <div id="form_set">
-        {% for form in serviceFormset.forms %}
-            <table class='no_error'>
-                {{ form.as_table }}
-            </table>
-        {% endfor %}
-    </div>
-    <input type="button" value="Add More" id="add_more">
-    <div id="empty_form" style="display:none">
-        <table class='no_error'>
-            {{ serviceFormset.empty_form.as_table }}
-        </table>
-    </div>
-
-{% endblock %}
-{% block page_scripts %}
-
-    <script>
-
-    </script>
-{% endblock %}
+{#{% endblock %}#}
+{#{% block page_scripts %}#}
+{##}
+{#    <script>#}
+{##}
+{#    </script>#}
+{#{% endblock %}#}

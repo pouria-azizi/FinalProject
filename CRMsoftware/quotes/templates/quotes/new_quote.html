@@ -1,16 +1,87 @@
 {% extends 'organs/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+
 {% block content %}
+    <form class="mt-4 mb-3" method="post" enctype="multipart/form-data">{% csrf_token %}
 
-    <div class="container col-4" style="color: white">
-        <form method="post">{% csrf_token %}
-
-            <div class="form-group">سازمان
-                {{ form.organ|add_class:'form-control' }}
+        <div class="container">
+            <div class="jumbotron">
+                <h1 class="text font-weight-bold">ایجاد پیش فاکتور</h1>
+                <button>
+                    <a href="{% url 'quotes:quote_list' %}">بازگشت</a>
+                </button>
+                <div class="form-group col-lg-3">
+                    <label for="organization" class="text-info">انتخاب سازمان</label>
+                    <select class="form-control" id="organization" name="organization" required>
+                        <option value="0">None</option>
+                        {% for organization in organizations %}
+                            <option value="{{ organization.pk }}">{{ organization.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <input type="submit" value="Confirm">
-        </form>
-    </div>
+            <div class="container">
+                <div class="col-12">
+
+                        {{ formset.management_form }}
+
+                        {% for form in formset %}
+                            <div class='table table-dark table-bordered'>
+                                <table class='no_error'>
+                                    <thead>
+                                    <tr>
+                                        <th>محصولات</th>
+                                        <th>تعداد</th>
+                                        <th>درصد تخفیف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td aria-required="true">{{ form.product }}</td>
+                                        <td>{{ form.qty }}</td>
+                                        <td>{{ form.discount }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
+                        <button class="btn btn-info" type="submit" style="">صدور فاکتور</button>
+
+                        <input type="button" class="btn btn-info" value="ردیف جدید" id="add_more">
+
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+
+{% block page_scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#add_more').click(function () {
+                cloneMore('div.table:last', 'form');
+            });
+
+            function cloneMore(selector, type) {
+                var newElement = $(selector).clone(true);
+                var total = $('#id_' + type + '-TOTAL_FORMS').val();
+                newElement.find(':input').each(function () {
+                    var name = $(this).attr('name').replace('-' + (total - 1) + '-', '-' + total + '-');
+                    var id = 'id_' + name;
+                    $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                });
+                newElement.find('label').each(function () {
+                    var newFor = $(this).attr('for').replace('-' + (total - 1) + '-', '-' + total + '-');
+                    $(this).attr('for', newFor);
+                });
+                total++;
+                $('#id_' + type + '-TOTAL_FORMS').val(total);
+                $(selector).after(newElement);
+            }
+
+        });
+    </script>
 
 {% endblock %}

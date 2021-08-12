@@ -26,7 +26,7 @@
                     <th scope="col">تاریخ ایجاد</th>
                     <th scope="col">PDF خروجی</th>
                     <th scope="col">ارسال به ایمیل مخاطب</th>
-                    <th scope="col">اضافه کردن محصول</th>
+{#                    <th scope="col">اضافه کردن محصول</th>#}
                 </tr>
                 </thead>
                 <tbody>
@@ -38,7 +38,7 @@
                         <td>{{ organ.created_at|date:"Y-m-d" }}</td>
                         <td><a href="{% url 'quotes:quote_pdf' organ.pk %}">دریافت</a></td>
                         <td><a href="{% url 'quotes:send-email' organ.pk %}">ارسال</a></td>
-                        <td><a href="{% url 'quotes:create_quote' %}">🛠</a></td>
+{#                        <td><a href="{% url 'quotes:create_quote' %}">🛠</a></td>#}
 
                     </tr>
                 {% endfor %}

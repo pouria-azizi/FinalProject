@@ -2,7 +2,7 @@ import weasyprint
 from django.views.generic import CreateView, ListView, DetailView
 from . import models, tasks, forms
 from django.contrib import messages
-from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
@@ -13,60 +13,43 @@ from django.utils.html import strip_tags
 from .models import Email
 from rest_framework.exceptions import NotAuthenticated
 from django.http import JsonResponse, HttpResponse
+from django.utils.decorators import method_decorator
+from organs.models import Organization # noqa
 
 
-class CreateItemQuotes(LoginRequiredMixin, CreateView):
-    """
-    Add item to quote
-    """
-    template_name = 'quotes/quote_form.html'
-    model = models.QuoteItem
-    fields = [
-        'quote',
-        'product',
-        'qty',
-        'discount'
-    ]
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['organizations'] = models.Quote.objects.all()
-        return context
-
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        messages.success(self.request, 'فاکتور ذخیره شد')
-        return super(CreateItemQuotes, self).form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, 'اطلاعات نادرست است')
-        return super().form_invalid(form)
-
-    def get_success_url(self):
-        return reverse('quotes:quote_list')
-
-
+@method_decorator(csrf_exempt, name='dispatch')
 class CreateQuotes(LoginRequiredMixin, CreateView):
     """
-    Create quote
+        create quotes for organs, using formset
     """
     template_name = 'quotes/new_quote.html'
-    model = models.Quote
-    fields = [
-        'organ',
-    ]
 
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        messages.success(self.request, 'پیش فاکتور جدید ایجاد شد')
-        return super(CreateQuotes, self).form_valid(form)
+    def get_context_data(self, **kwargs):
+        formset = forms.QuoteItemFormSet(queryset=models.QuoteItem.objects.none())
+        organizations = Organization.objects.filter(created_by=self.request.user)
+        return {
+            'formset': formset,
+            'organizations': organizations,
+        }
 
-    def form_invalid(self, form):
-        messages.error(self.request, 'اطلاعات نادرست است')
-        return super().form_invalid(form)
+    def post(self, *args, **kwargs):
+        formset = forms.QuoteItemFormSet(data=self.request.POST)
+        if formset.is_valid() and self.request.POST['organization'] != '0':
+            try:
+                organization = Organization.objects.get(pk=self.request.POST['organization'], created_by=self.request.user)
+                quote = models.Quote.objects.create(created_by=self.request.user, organ=organization)
 
-    def get_success_url(self):
-        return reverse('quotes:create_quote')
+                for form in formset:
+                    form.instance.quote = quote
+                    form.save()
+                messages.success(self.request, 'فاکتور با موفقیت صادر شد')
+                return redirect('quotes:quote_list')
+            except:
+                messages.error(self.request, 'لطفا اطلاعات درست را وارد نمایید')
+                return redirect('quotes:quote_list')
+        else:
+            messages.error(self.request, 'لطفا اطلاعات درست را وارد نمایید')
+            return redirect('quotes:quote_list')
 
 
 class QuoteList(LoginRequiredMixin, ListView):
@@ -120,6 +103,9 @@ class QuotePDF(LoginRequiredMixin, DetailView):
 @require_http_methods(["GET"])
 @login_required
 def send_email_to_organs(request, pk):
+    """
+    preparing data and send them to celery task
+    """
     try:
 
         html_message = render_to_string('quotes/quote_pdf.html', context={'object': models.Quote.objects.get(pk=pk, created_by=request.user)})
