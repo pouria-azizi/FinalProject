@@ -1,5 +1,5 @@
 import weasyprint
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView
 from . import models, tasks, forms
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -15,6 +15,7 @@ from rest_framework.exceptions import NotAuthenticated
 from django.http import JsonResponse, HttpResponse
 from django.utils.decorators import method_decorator
 from organs.models import Organization # noqa
+from django.urls import reverse_lazy
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -34,7 +35,7 @@ class CreateQuotes(LoginRequiredMixin, CreateView):
 
     def post(self, *args, **kwargs):
         formset = forms.QuoteItemFormSet(data=self.request.POST)
-        if formset.is_valid() and self.request.POST['organization'] != '0':
+        if formset.is_valid() and self.request.POST['organization']:
             try:
                 organization = Organization.objects.get(pk=self.request.POST['organization'], created_by=self.request.user)
                 quote = models.Quote.objects.create(created_by=self.request.user, organ=organization)

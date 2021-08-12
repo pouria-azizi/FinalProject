@@ -47,6 +47,9 @@ class Organization(models.Model):
 
 
 class FollowUp(models.Model):
+    """
+    model to save organ's followup
+    """
     description = models.TextField(blank=True)
     organ = models.ForeignKey(Organization, on_delete=models.CASCADE)
     created = jmodels.jDateTimeField(auto_now_add=True)
@@ -54,8 +57,3 @@ class FollowUp(models.Model):
 
     def __str__(self):
         return f'{self.organ}'
-    #
-    # class Meta:
-    #     constraints = [
-    #         models.UniqueConstraint(fields=['description', 'organ'], name='UniqueFollowUp')
-    #     ]

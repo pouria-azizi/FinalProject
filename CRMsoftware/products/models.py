@@ -9,7 +9,7 @@ class Product(models.Model):
     Products to be sold to organizations
     """
     name = models.CharField(max_length=200, db_index=True)
-    slug = models.SlugField(max_length=200, db_index=True)
+    slug = models.SlugField(max_length=200, unique=False)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -28,7 +28,7 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('products:product_detail', args=[self.id, self.slug])
-    #
+
     # def get_related_product(self):
     #     related = OrganizationProduct.objects.all()
     #     return Organization.objects.filter(organization_product__in=related).distinct()

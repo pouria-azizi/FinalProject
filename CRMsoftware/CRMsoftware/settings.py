@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'products',
     'users',
     'quotes',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -117,7 +119,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa'
+LANGUAGES = [
+    ('fa', _('Persian')),
+    ('en', _('English')),
+]
 
 TIME_ZONE = 'UTC'
 
@@ -154,7 +161,7 @@ EMAIL_PORT = '587'
 
 DEFAULT_FROM_EMAIL = '@gmail.com'
 EMAIL_HOST_USER = '@gmail.com'
-SERVER_EMAIL = '@.com'
+SERVER_EMAIL = '@gmail.com'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_SUBJECT_PREFIX = 'فاکتور خرید'
 EMAIL_USE_TLS = True
@@ -162,5 +169,5 @@ EMAIL_USE_TLS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 2
+    'PAGE_SIZE': 2,
 }
