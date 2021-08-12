@@ -5,23 +5,29 @@
     {% if category %}{{ category.name }}{% else %}Organs{% endif %}
 {% endblock %}
 {% block content %}
-    <div class="col-lg-3 container-fluid">
-        <h4 style="color: white">تاریخچه ی پیگیری های سازمان {{ object }}
-        </h4>
-    </div><br>
-    <button><a href="{% url 'organ_list' %}">بازگشت</a></button>
+
+
     <form method="get">
+        <div class="container">
+            <div class="jumbotron">
+                <h1>تاریخچه ی پیگیری های سازمان {{ object }}</h1>
+            <button><a href="{% url 'organ_list' %}">بازگشت</a></button>
 
-        <div class="product-list">
+
+            </div>
+
+
+        <div class="container">
+        <div class="col-sm">
+
             <table class="table table-striped" style="background-color: white">
-
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col" class="col-lg-1">#</th>
 
-                    <th scope="col">ثبت توسط</th>
-                    <th scope="col">تاریخ ثبت</th>
-                    <th scope="col">توضیحات</th>
+                    <th scope="col" class="col-lg-2">ثبت توسط</th>
+                    <th scope="col" class="col-lg-3">تاریخ ثبت</th>
+                    <th scope="col" class="col-lg-5">توضیحات</th>
 
                 </tr>
                 </thead>
@@ -40,6 +46,7 @@
             </table>
 
         </div>
+            </div>
+            </div>
     </form>
-
 {% endblock %}

@@ -14,6 +14,7 @@ from .models import Email
 from rest_framework.exceptions import NotAuthenticated
 from django.http import JsonResponse, HttpResponse
 
+
 class CreateItemQuotes(LoginRequiredMixin, CreateView):
     """
     Add item to quote

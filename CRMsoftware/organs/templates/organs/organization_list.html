@@ -2,9 +2,10 @@
 {% load static %}
 
 {% block title %}
-    {% if category %}{{ category.name }}{% else %}Organs{% endif %}
+    Organs
 {% endblock %}
 {% block content %}
+    <div class="container-fluid col-lg-10">
     <div class="button btn-sm">
         <button class="header btn-block"><a style="color: black" href="{% url 'create_organ' %}">ایجاد شرکت جدید</a>
         </button>
@@ -16,7 +17,7 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">نام</th>
+                    <th scope="col">نام سازمان</th>
                     <th scope="col">استان</th>
                     <th scope="col">نام مخاطب</th>
                     <th scope="col">تلفن</th>
@@ -66,7 +67,7 @@
         {% endif %}
     </span>
     </div>
-
+</div>
 {% endblock %}
 {% block page_scripts %}
 

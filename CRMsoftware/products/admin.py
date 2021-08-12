@@ -12,5 +12,5 @@ from .models import Product
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['image', 'name', 'slug', 'price', 'available', 'created']
     list_filter = ['available', 'created', 'slug']
-    list_editable = ['price', 'available']
+    list_editable = ['price', 'available']     # 'description'
     prepopulated_fields = {'slug': ('name',)}
