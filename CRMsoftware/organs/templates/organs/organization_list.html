@@ -6,69 +6,54 @@
 {% endblock %}
 {% block content %}
     <div class="container-fluid col-lg-10">
-    <div class="button btn-sm">
-        <button class="header btn-block"><a style="color: black" href="{% url 'create_organ' %}">ایجاد شرکت جدید</a>
-        </button>
-    </div>
-    <form method="get">
-
-        <div class="product-list">
-            <table class="table table-striped" style="background-color: white">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">نام سازمان</th>
-                    <th scope="col">استان</th>
-                    <th scope="col">نام مخاطب</th>
-                    <th scope="col">تلفن</th>
-                    <th scope="col">ثبت توسط</th>
-                    <th scope="col">تاریخ ثبت</th>
-                    <th scope="col">عملیات</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for organ in object_list %}
-                    <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td><a href="{% url 'organ_detail' organ.pk %}" id="data">{{ organ.name }}</a></td>
-                        <td>{{ organ.province }}</td>
-                        <td>{{ organ.owner }}</td>
-                        <td>{{ organ.organization_phone }}</td>
-                        <td>{{ organ.created_by }}</td>
-                        <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
-
-
-                        <td>
-                        <a href="{% url 'organ-description' organ.pk %}"> ثبت پیگیری</a>
-                            <a href="{% url 'followup-detail' organ.pk %}">🧐</a>
-
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
+        <div class="button btn-sm">
+            <button class="header btn-block"><a style="color: black" href="{% url 'create_organ' %}">ایجاد شرکت جدید</a>
+            </button>
         </div>
-    </form>
-    <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+        <form method="get">
 
-        <span class="current" style="color: white">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
+            <div class="product-list">
+                <table class="table table-striped" style="background-color: white">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">نام سازمان</th>
+                        <th scope="col">استان</th>
+                        <th scope="col">نام مخاطب</th>
+                        <th scope="col">تلفن</th>
+                        <th scope="col">ثبت توسط</th>
+                        <th scope="col">تاریخ ثبت</th>
+                        <th scope="col">عملیات</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for organ in object_list %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td><a href="{% url 'organ_detail' organ.pk %}" id="data">{{ organ.name }}</a></td>
+                            <td>{{ organ.province }}</td>
+                            <td>{{ organ.owner }}</td>
+                            <td>{{ organ.organization_phone }}</td>
+                            <td>{{ organ.created_by }}</td>
+                            <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
 
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
+
+                            <td>
+                                <a href="{% url 'organ-description' organ.pk %}"> ثبت پیگیری</a>
+                                <a href="{% url 'followup-detail' organ.pk %}">🧐</a>
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </form>
+
+        {% include 'organs/pagination.html' %}
+
     </div>
-</div>
-{% endblock %}
-{% block page_scripts %}
 
 {% endblock %}
+

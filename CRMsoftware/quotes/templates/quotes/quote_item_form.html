@@ -7,63 +7,49 @@
     Quotes
 {% endblock %}
 {% block content %}
-        <div class="container-fluid col-lg-10">
+    <div class="container-fluid col-lg-10">
 
-    <div class="button btn-sm">
-        <button class="header btn-block"><a style="color: black" href="{% url 'quotes:new_quote' %}">ایجاد پیش
-            فاکتور</a>
-        </button>
-    </div>
-    <form method="get">
-
-        <div class="product-list">
-            <table class="table table-striped" style="background-color: white">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">نام سازمان</th>
-                    <th scope="col">ثبت توسط</th>
-                    <th scope="col">تاریخ ایجاد</th>
-                    <th scope="col">PDF خروجی</th>
-                    <th scope="col">ارسال به ایمیل مخاطب</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for organ in object_list %}
-                    <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td><a href="{% url 'quotes:quote_detail' organ.pk %}">{{ organ.quoteitem_set.first }}</a></td>
-                            <td>{{ organ.created_by }}</td>
-                        <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
-                        <td><a href="{% url 'quotes:quote_pdf' organ.pk %}">دریافت</a></td>
-                        <td><a href="{% url 'quotes:send-email' organ.pk %}">ارسال</a></td>
-
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-
+        <div class="button btn-sm">
+            <button class="header btn-block"><a style="color: black" href="{% url 'quotes:new_quote' %}">ایجاد پیش
+                فاکتور</a>
+            </button>
         </div>
-    </form>
+        <form method="get">
+
+            <div class="product-list">
+                <table class="table table-striped" style="background-color: white">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">نام سازمان</th>
+                        <th scope="col">ثبت توسط</th>
+                        <th scope="col">تاریخ ایجاد</th>
+                        <th scope="col">PDF خروجی</th>
+                        <th scope="col">ارسال به ایمیل مخاطب</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for organ in object_list %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td><a href="{% url 'quotes:quote_detail' organ.pk %}">{{ organ.quoteitem_set.first }}</a>
+                            </td>
+                            <td>{{ organ.created_by }}</td>
+                            <td>{{ organ.created_at|date:"Y-m-d , H:i:s" }}</td>
+                            <td><a href="{% url 'quotes:quote_pdf' organ.pk %}">دریافت</a></td>
+                            <td><a href="{% url 'quotes:send-email' organ.pk %}">ارسال</a></td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </form>
 
 
-    <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+        {% include 'organs/pagination.html' %}
 
-        <span class="current" style="color: white">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-    </div>
     </div>
 
 {% endblock %}
