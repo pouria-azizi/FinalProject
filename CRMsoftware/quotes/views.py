@@ -76,8 +76,6 @@ class QuoteDetail(LoginRequiredMixin, DetailView):
     extra_context = {'quote_pk': models.QuoteItem.quote}
 
     def get_queryset(self):
-        if self.request.user.is_anonymous:
-            raise NotAuthenticated('You need to be logged on.')
         return models.Quote.objects.filter(created_by=self.request.user)
 
 
@@ -96,8 +94,6 @@ class QuotePDF(LoginRequiredMixin, DetailView):
         return pdf_response
 
     def get_queryset(self):
-        if self.request.user.is_anonymous:
-            raise NotAuthenticated('You need to be logged on.')
         return models.Quote.objects.filter(created_by=self.request.user)
 
 

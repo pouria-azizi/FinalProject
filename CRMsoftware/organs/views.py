@@ -68,7 +68,6 @@ class EditOrgan(LoginRequiredMixin, UpdateView):
         'owner_phone',
     )
     template_name = 'organs/organization_form.html'
-    success_url = reverse_lazy('organ_list')
 
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid input.')
@@ -84,15 +83,13 @@ class EditOrgan(LoginRequiredMixin, UpdateView):
             return redirect(reverse_lazy('create_organ'))
 
     def get_queryset(self):
-        if self.request.user.is_anonymous:
-            raise NotAuthenticated('You need to be logged on.')
         return models.Organization.objects.filter(created_by=self.request.user)
 
     def get_success_url(self):
         return reverse('organ_list')
 
 
-class OrgansList(ListView):
+class OrgansList(LoginRequiredMixin, ListView):
     """
     Show the list of organs
     """
@@ -101,12 +98,7 @@ class OrgansList(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        if self.request.user.is_anonymous:
-            raise NotAuthenticated('You need to be logged on.')
         return models.Organization.objects.filter(created_by=self.request.user)
-
-    # def get_queryset(self):
-    #     return models.Organization.objects.filter(created_by=self.request.user)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -128,12 +120,10 @@ class OrgansDetail(LoginRequiredMixin, DetailView):
         return c
 
     def get_queryset(self):
-        if self.request.user.is_anonymous:
-            raise NotAuthenticated('You need to be logged on.')
         return models.Organization.objects.filter(created_by=self.request.user)
 
 
-class OrganizationNewProduct(CreateView):
+class OrganizationNewProduct(LoginRequiredMixin, CreateView):
     """
     Create new organs product
     """
@@ -186,8 +176,6 @@ class FollowUpDetail(LoginRequiredMixin, DetailView):
         return context
 
     def get_queryset(self):
-        if self.request.user.is_anonymous:
-            raise NotAuthenticated('You need to be logged on.')
         return models.Organization.objects.filter(created_by=self.request.user)
 
 
